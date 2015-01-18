@@ -1,0 +1,11 @@
+{
+  "name": "newModel",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
