@@ -8,46 +8,46 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 CREATE TABLE [dbo].[User](
-	UserID int NOT NULL PRIMARY KEY,
-	username varchar(20),
-	token varchar(20),
-	createdAt DateTime,
-	updatedAt DateTime
+	userID int NOT NULL PRIMARY KEY,
+	username varchar(20) NOT NULL,
+	pass varchar(20) NOT NULL,
+	email varchar(30) NOT NULL,
+	token varchar(20) NOT NULL,
+	createdAt Date NOT NULL,
+	updatedAt Date NOT NULL
 )
 
 CREATE TABLE [dbo].[OwnedFoodItem](
-	OwnershipID int,
-	UserID int,
-	FoodItemID int,
-	DateBought varchar(25),
-	ExpiryDate DateTime,
-	Used Bit
+	ownershipID int NOT NULL PRIMARY KEY,
+	userID int NOT NULL,
+	foodItemID int NOT NULL,
+	dateBought Date NOT NULL,
+	expiryDate Date NOT NULL,
+	used Bit
 );
 
 CREATE TABLE [dbo].[FoodItem](
-	FoodItemID int NOT NULL PRIMARY KEY,
-	UPCCode int,
-	ItemName varchar(25),
-	Details varchar(20),
-	FoodCategory int,
-	ExpectedExpiryDate int
-);
-
-CREATE TABLE [dbo].[FoodCategory](
-	FoodCategoryID int,
-	FoodCategoryName varchar(20)
+	foodItemID int NOT NULL PRIMARY KEY,
+	upcCode varchar(15),
+	itemName varchar(60) NOT NULL,
+	brand varchar(50) NOT NULL,
+	size varchar(25),
+	foodCategory varchar(30),
+	expectedExpiryDate int,
+	imageURL varchar(50)
 );
 
 CREATE TABLE [dbo].[FavoritedRecipe](
-	RecipeID int,
-	UserID int
+	favoriteRecipeID int NOT NULL PRIMARY KEY,
+	recipeID int NOT NULL,
+	userID int NOT NULL
 )
 
 CREATE TABLE [dbo].[Recipe](
-	RecipeID int,
-	RecipeName varchar(20),
-	Ingredients varchar(20),
-	Amounts varchar(20)
+	recipeID int NOT NULL PRIMARY KEY,
+	recipeName varchar(20),
+	ingredients varchar(20),
+	amounts varchar(20)
 )
-
