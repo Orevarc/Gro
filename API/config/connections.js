@@ -92,8 +92,8 @@ module.exports.connections = {
         adapter: 'sails-sqlserver-adapter',
         user: 'groteam',
         password: '1loveLuiz',
-        host: 'tl8i72mcy8.database.windows.net' // azure database
-        port: 1433
+        host: 'tl8i72mcy8.database.windows.net', // azure database
+        port: 1433,
         database: 'gro_db',
         options: {
             encrypt: true // use this for Azure databases

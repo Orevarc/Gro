@@ -4,6 +4,9 @@
  * @description :: Server-side logic for managing Auths
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+var passport = require("passport");
+var jwt = require('jsonwebtoken');
+var secret = 'ewfn09qu43f09qfj94qf*&H#(R';
 
 module.exports = {
 
@@ -12,24 +15,40 @@ module.exports = {
     },
     process: function(req, res) {
         passport.authenticate('local', function(err, user, info) {
-            if( (err)||(!user) ) {
-                return res.send({
-                    message: 'login failed'
+            if ((err) || (!user)) {
+                res.send({
+                    success: false,
+                    message: 'invalidPassword'
                 });
-                res.send(err);
+                return;
+            } else {
+                if (err) {
+                    res.send({
+                        success: false,
+                        message: 'unknownError',
+                        error: err
+                    });
+                } else {
+
+                    var token = jwt.sign(user, secret, {
+                        expiresInMinutes: 60 * 24
+                    });
+                    res.send({
+                        success: true,
+                        user: user,
+                        token: token
+                    });
+                }
             }
-            req.logIn(user, function(err) {
-                if(err) res.send(err);
-                return res.send({
-                    message: 'login successful'
-                });
-            });
-        }) (req, res);
+        })(req, res);
     },
 
     logout: function(req, res) {
         req.logOut();
-        res.send('logout successful');
+        res.send({
+            success: true,
+            message: 'logout successful'
+        });
     }
 };
 
@@ -38,4 +57,3 @@ module.exports.blueprints = {
     rest: true,
     shortcuts: true
 };
-
