@@ -5,13 +5,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -19,15 +26,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PhotoCaptureExample extends Activity 
 {
-	protected Button _button;
-	protected ImageView _image;
-	protected TextView _field;
+	protected ImageButton _button;
+	//protected ImageView _image;
 	protected String _path;
 	protected boolean _taken;
 	protected Bitmap bitmap;
@@ -42,9 +48,8 @@ public class PhotoCaptureExample extends Activity
         
         setContentView(R.layout.take_photo);
        
-        _image = ( ImageView ) findViewById( R.id.image );
-        _field = ( TextView ) findViewById( R.id.field );
-        _button = ( Button ) findViewById( R.id.button );
+      // _image = ( ImageView ) findViewById( R.id.image );
+        _button = ( ImageButton ) findViewById( R.id.button );
         _button.setOnClickListener( new ButtonClickHandler() );
         
         _path = "/storage/sdcard0/images/make_machine_example.jpg";//Environment.getExternalStorageDirectory() + "/images/make_machine_example.jpg";
@@ -98,9 +103,8 @@ public class PhotoCaptureExample extends Activity
     	
     	bitmap = BitmapFactory.decodeFile( _path, options );
     	
-    	_image.setImageBitmap(bitmap);
+    	//_image.setImageBitmap(bitmap);
     	
-    	_field.setVisibility( View.GONE );
 		try {
 			exif = new ExifInterface(_path);
 		} catch (IOException e) {
@@ -153,6 +157,10 @@ public class PhotoCaptureExample extends Activity
     	outState.putBoolean( PhotoCaptureExample.PHOTO_TAKEN, _taken );
     }
     
+	public void OCR(View view) {
+		onPhotoTaken();
+	}
+    
     public void performOCR()
     {
     	System.out.println("Performing OCR");
@@ -160,10 +168,21 @@ public class PhotoCaptureExample extends Activity
     	// DATA_PATH = Path to the storage
     	// lang = for which the language data exists, usually "eng"
     	baseApi.init("/storage/sdcard0/OCR", "eng");
-    	// Eg. baseApi.init("/mnt/sdcard/tesseract", "eng");
     	baseApi.setImage(bitmap);
     	String recognizedText = baseApi.getUTF8Text();
     	baseApi.end();
     	System.out.println(recognizedText);
+    	try {
+    		File file = new File("/storage/sdcard0/InitialOCR/OCRTextCaptured.txt");
+			PrintWriter out = new PrintWriter(file);
+			out.println(recognizedText);
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
     }
+    
 }
