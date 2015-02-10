@@ -2,8 +2,8 @@
 Grocery and Food Management
 
 <b>Running the server</b>
-<u>On Windows:</u>
-Download NodeJS from:
+<p><u>On Windows:</u></p>
+<p>Download NodeJS from:</p>
 ```
 http://nodejs.org/download/
 ```
