@@ -16,6 +16,8 @@ passport.use(new LocalStrategy({
         usernameField: 'username',
         passwordField: 'password'
     },
+    //sails.log("Checking Login credentials...");
+
     function(username, password, done) {
         User.findOne({
             username: username

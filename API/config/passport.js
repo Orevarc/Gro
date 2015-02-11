@@ -1,3 +1,4 @@
+var passport = require('passport');
 module.exports = {
     http: {
         customMiddleware: function(app) {
