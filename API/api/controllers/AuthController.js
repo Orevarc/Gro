@@ -14,6 +14,7 @@ module.exports = {
         res.view();
     },
     process: function(req, res) {
+        sails.log("Processsing Login...");
         passport.authenticate('local', function(err, user, info) {
             if ((err) || (!user)) {
                 res.send({
@@ -29,10 +30,11 @@ module.exports = {
                         error: err
                     });
                 } else {
-
+                    sails.log("Creating token...");
                     var token = jwt.sign(user, secret, {
                         expiresInMinutes: 60 * 24
                     });
+                    sails.log("Sending Login Response.");
                     res.send({
                         success: true,
                         user: user,
