@@ -9,12 +9,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[User](
-	userID int IDENTITY (1,1) NOT NULL PRIMARY KEY,
+	id int IDENTITY (1,1) NOT NULL PRIMARY KEY,
 	username nvarchar(50) NOT NULL,
-	pass nvarchar(512) NOT NULL,
+	password nvarchar(512) NOT NULL,
 	email nvarchar(50) NOT NULL,
-	createdAt Date NOT NULL,
-	updatedAt Date NOT NULL
+	createdAt Date,
+	updatedAt Date
 )
 
 CREATE TABLE [dbo].[OwnedFoodItem](
@@ -23,6 +23,7 @@ CREATE TABLE [dbo].[OwnedFoodItem](
 	foodItemID int NOT NULL,
 	dateBought Date NOT NULL,
 	expiryDate Date NOT NULL,
+	amount int NOT NULL,
 	used Bit
 );
 
@@ -33,11 +34,7 @@ CREATE TABLE [dbo].[FoodItem](
 	foodItemID int IDENTITY (1,1) NOT NULL PRIMARY KEY,
 	upcCode nvarchar(13) NOT NULL,
 	itemName nvarchar(60) NOT NULL,
-	brand nvarchar(50),
-	size nvarchar(25),
 	foodCategoryID int,
-	expectedExpiryDate int,
-	imageURL varchar(70)
 );
 
 CREATE TABLE [dbo].[FavoritedRecipe](
@@ -60,3 +57,25 @@ CREATE TABLE [dbo].[FoodCategory](
 	expiryTime int
 )
 
+CREATE TABLE [dbo].[Tokens](
+	[access_token] [nvarchar](256) NOT NULL PRIMARY KEY,
+	[refresh_token] [nvarchar](256) NOT NULL,
+	[code] [nvarchar](256) NULL,
+	[user_id] [int] NULL,
+	[expiration_date] [datetime] NULL,
+	[client_id] [nvarchar](256) NULL,
+	[security_level] [nvarchar](max) NULL,
+	[scope] [nvarchar](max) NULL,
+)
+
+CREATE TABLE [dbo].[Clients](
+	[name] [nvarchar](50) NULL,
+	[organization] [nvarchar](20) NULL,
+	[email] [nvarchar](max) NULL,
+	[client_id] [nvarchar](256) NOT NULL PRIMARY KEY,
+	[client_secret] [nvarchar](max) NOT NULL,
+	[trust_level] [nvarchar](max) NULL,
+	[redirect_uri] [nvarchar](max) NULL,
+	[date_registered] [nvarchar](max) NULL,
+	[date_verified] [nvarchar](max) NULL,
+)
