@@ -7,5 +7,6 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_shopping_list">ShoppingList</string>
     <string name="title_activity_recipe">Recipe</string>
+    <string name="title_activity_test">Test</string>
 
 </resources>

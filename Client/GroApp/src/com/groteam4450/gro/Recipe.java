@@ -25,4 +25,10 @@ public class Recipe extends Activity {
 		Intent myIntent = new Intent(Recipe.this, PhotoCaptureExample.class);
 		startActivity(myIntent);
 	}
+	
+	@Override
+	public void onBackPressed() {
+	   Intent setIntent = new Intent(Recipe.this, PhotoCaptureExample.class);
+	   startActivity(setIntent);
+	}
 }

@@ -231,4 +231,10 @@ public class PhotoCaptureExample extends Activity
 		startActivity(myIntent);
 	}
     
+	@Override
+	public void onBackPressed() {
+	   Intent setIntent = new Intent(PhotoCaptureExample.this, Login.class);
+	   startActivity(setIntent);
+	}
+	
 }

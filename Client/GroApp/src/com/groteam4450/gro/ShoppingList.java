@@ -25,4 +25,10 @@ public class ShoppingList extends Activity {
 		Intent myIntent = new Intent(ShoppingList.this, PhotoCaptureExample.class);
 		startActivity(myIntent);
 	}
+	
+	@Override
+	public void onBackPressed() {
+	   Intent setIntent = new Intent(ShoppingList.this, PhotoCaptureExample.class);
+	   startActivity(setIntent);
+	}
 }
