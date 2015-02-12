@@ -73,8 +73,37 @@
             android:height="100dp"
             android:onClick="goToMain"
             android:text="@string/action_sign_in_short"
+            android:textColor="@color/white"
             android:textSize="@dimen/abc_text_size_large_material"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/password"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/password"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:paddingLeft="4dp"
+            android:text="Forgot your password?"
+            android:textColor="@color/blue" />
+
+         <TextView
+             android:id="@+id/register"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignLeft="@id/password"
+             android:layout_alignParentLeft="true"
+             android:layout_below="@+id/password"
+             android:layout_marginTop="30dp"
+             android:clickable="true"
+             android:onClick="onClick"
+             android:paddingLeft="4dp"
+             android:text="Register new account"
+             android:textColor="@color/blue" />
 
     </RelativeLayout>
 

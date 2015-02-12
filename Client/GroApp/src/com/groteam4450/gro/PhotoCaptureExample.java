@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -26,8 +28,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class PhotoCaptureExample extends Activity 
@@ -38,6 +42,8 @@ public class PhotoCaptureExample extends Activity
 	protected boolean _taken;
 	protected Bitmap bitmap;
 	protected ExifInterface exif = null;
+	protected ArrayList<FoodItem> ownedFoodList;
+	protected ListView foodListView;
 	
 	protected static final String PHOTO_TAKEN	= "photo_taken";
 		
@@ -52,8 +58,23 @@ public class PhotoCaptureExample extends Activity
         _button = ( ImageButton ) findViewById( R.id.button );
         _button.setOnClickListener( new ButtonClickHandler() );
         
-        _path = "/storage/sdcard0/images/make_machine_example.jpg";//Environment.getExternalStorageDirectory() + "/images/make_machine_example.jpg";
- 
+        _path = "/storage/sdcard0/images/make_machine_example.jpg";
+        
+        foodListView = (ListView) findViewById(R.id.listView1);
+        
+        ownedFoodList = new ArrayList<FoodItem>();
+        
+        FoodItem foodA = new FoodItem("Egg", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        FoodItem foodB = new FoodItem("Riceroni", "12345678910", "Meat, Poultry, Seafood", "10/02/2014", false);
+        FoodItem foodC = new FoodItem("I love Coding and pizza and biscuits and pie", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        ownedFoodList.add(foodA);
+        ownedFoodList.add(foodB);
+
+        FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
+        
+        foodListView.setAdapter(arrayAdapter);
+        
+        ownedFoodList.add(foodC);
     }
     
     public class ButtonClickHandler implements View.OnClickListener 

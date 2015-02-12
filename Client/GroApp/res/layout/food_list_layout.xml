@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp" >
+
+    <TextView
+        android:id="@+id/foodName"
+        android:layout_width="190dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="5dp"
+        android:text="Name"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/expiryStandard"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:text="Expires on: " />
+
+    <TextView
+        android:id="@+id/foodExpiry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:paddingRight="15dp"
+        android:text="Expiry" />
+
+</LinearLayout>
