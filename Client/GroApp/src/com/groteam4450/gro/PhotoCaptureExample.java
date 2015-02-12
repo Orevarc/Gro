@@ -11,6 +11,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,10 +52,8 @@ public class PhotoCaptureExample extends Activity
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        
         setContentView(R.layout.take_photo);
        
-      // _image = ( ImageView ) findViewById( R.id.image );
         _button = ( ImageButton ) findViewById( R.id.button );
         _button.setOnClickListener( new ButtonClickHandler() );
         
@@ -65,16 +64,32 @@ public class PhotoCaptureExample extends Activity
         ownedFoodList = new ArrayList<FoodItem>();
         
         FoodItem foodA = new FoodItem("Egg", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        FoodItem foodB = new FoodItem("Riceroni", "12345678910", "Meat, Poultry, Seafood", "10/02/2014", false);
-        FoodItem foodC = new FoodItem("I love Coding and pizza and biscuits and pie", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        FoodItem foodB = new FoodItem("Riceroni", "12345678910", "Grains", "10/02/2014", false);
+        FoodItem foodC = new FoodItem("Haggis", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        FoodItem foodD = new FoodItem("Corn", "12345678910", "Meat, Poultry, Seafood", "11/02/2017", false);
+        FoodItem foodE = new FoodItem("Peas", "12345678910", "Meat, Poultry, Seafood", "11/02/2016", false);
+        FoodItem foodF = new FoodItem("Corrosive acid", "12345678910", "Meat, Poultry, Seafood", "13/02/2015", false);
+        FoodItem foodG = new FoodItem("Waffles", "12345678910", "Meat, Poultry, Seafood", "10/02/2015", false);
+        FoodItem foodH = new FoodItem("Burgers", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        FoodItem foodI = new FoodItem("Fuzzy Peaches", "12345678910", "Meat, Poultry, Seafood", "31/04/2015", false);
+        FoodItem foodJ = new FoodItem("Human meat", "12345678910", "Meat, Poultry, Seafood", "11/02/2098", false);
+        FoodItem foodK = new FoodItem("Yams", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
+        FoodItem foodL = new FoodItem("Salt", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
         ownedFoodList.add(foodA);
         ownedFoodList.add(foodB);
-
+        ownedFoodList.add(foodC);
+        ownedFoodList.add(foodD);
+        ownedFoodList.add(foodE);
+        ownedFoodList.add(foodF);
+        ownedFoodList.add(foodG);
+        ownedFoodList.add(foodH);
+        ownedFoodList.add(foodI);
+        ownedFoodList.add(foodJ);
+        ownedFoodList.add(foodK);
+        ownedFoodList.add(foodL);
         FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
         
         foodListView.setAdapter(arrayAdapter);
-        
-        ownedFoodList.add(foodC);
     }
     
     public class ButtonClickHandler implements View.OnClickListener 
@@ -205,5 +220,15 @@ public class PhotoCaptureExample extends Activity
     	
     	
     }
+    
+	public void goToRecipe(View view) {
+		Intent myIntent = new Intent(PhotoCaptureExample.this, Recipe.class);
+		startActivity(myIntent);
+	}
+	
+	public void goToShopping(View view) {
+		Intent myIntent = new Intent(PhotoCaptureExample.this, ShoppingList.class);
+		startActivity(myIntent);
+	}
     
 }

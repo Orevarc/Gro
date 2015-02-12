@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal|center_vertical"
+    android:gravity="center_horizontal|center_vertical|top"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.50"
-        android:orientation="vertical" >
 
         <ListView
             android:id="@+id/listView1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="450dp" >
         </ListView>
-
-    </LinearLayout>
-
+        
     <ImageButton
         android:id="@+id/button"
-        android:layout_width="257dp"
-        android:layout_height="91dp"
-        android:src="@drawable/camera44"
-        android:background="@null" />
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignRight="@id/listView1"
+        android:layout_below="@id/listView1"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/camera44" />
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/fridgeButton"
+        android:layout_width="115dp"
+        android:layout_height="110dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/refrigeratorgreen"
+        android:clickable="false" />
+
+    <ImageButton
+        android:id="@+id/chefButton"
+        android:layout_width="95dp"
+        android:layout_height="90dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/fridgeButton"
+        android:background="@drawable/chef31"
+         android:onClick="goToRecipe" />
+
+    <ImageButton
+        android:id="@+id/shoppingButton"
+        android:layout_width="85dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/chefButton"
+        android:background="@drawable/grocery10"
+        android:onClick="goToShopping" />
+
+</RelativeLayout>

@@ -1650,11 +1650,15 @@ containing a value of this type.
         public static final int abc_textfield_search_material=0x7f020032;
         public static final int camera44=0x7f020033;
         public static final int chef31=0x7f020034;
-        public static final int grocery10=0x7f020035;
-        public static final int ic_launcher=0x7f020036;
-        public static final int logo=0x7f020037;
-        public static final int plus8=0x7f020038;
-        public static final int refrigerator=0x7f020039;
+        public static final int chef31green=0x7f020035;
+        public static final int grocery10=0x7f020036;
+        public static final int grocery10green=0x7f020037;
+        public static final int grolaunch=0x7f020038;
+        public static final int ic_launcher=0x7f020039;
+        public static final int logo=0x7f02003a;
+        public static final int plus8=0x7f02003b;
+        public static final int refrigerator=0x7f02003c;
+        public static final int refrigeratorgreen=0x7f02003d;
     }
     public static final class id {
         public static final int action_bar=0x7f090031;
@@ -1670,12 +1674,13 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f09002e;
         public static final int action_mode_bar_stub=0x7f09002d;
         public static final int action_mode_close_button=0x7f090020;
-        public static final int action_settings=0x7f09004d;
+        public static final int action_settings=0x7f090050;
         public static final int activity_chooser_view_content=0x7f090021;
         public static final int always=0x7f090014;
         public static final int beginning=0x7f09001b;
-        public static final int button=0x7f09004c;
+        public static final int button=0x7f09004f;
         public static final int checkbox=0x7f090029;
+        public static final int chefButton=0x7f090049;
         public static final int collapseActionView=0x7f090015;
         public static final int decor_content_parent=0x7f09002f;
         public static final int default_activity_button=0x7f090024;
@@ -1687,10 +1692,11 @@ containing a value of this type.
         public static final int end=0x7f09001c;
         public static final int expand_activities_button=0x7f090022;
         public static final int expanded_menu=0x7f090028;
-        public static final int expiryStandard=0x7f090049;
-        public static final int foodExpiry=0x7f09004a;
-        public static final int foodName=0x7f090048;
+        public static final int expiryStandard=0x7f09004c;
+        public static final int foodExpiry=0x7f09004d;
+        public static final int foodName=0x7f09004b;
         public static final int forgotPassword=0x7f090046;
+        public static final int fridgeButton=0x7f090048;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f09000e;
         public static final int icon=0x7f090026;
@@ -1698,7 +1704,7 @@ containing a value of this type.
         public static final int image=0x7f090023;
         public static final int imageView1=0x7f090040;
         public static final int listMode=0x7f09000a;
-        public static final int listView1=0x7f09004b;
+        public static final int listView1=0x7f09004e;
         public static final int list_item=0x7f090025;
         public static final int login=0x7f090044;
         public static final int login_progress=0x7f09003f;
@@ -1721,6 +1727,7 @@ containing a value of this type.
         public static final int search_plate=0x7f090039;
         public static final int search_src_text=0x7f09003a;
         public static final int search_voice_btn=0x7f09003e;
+        public static final int shoppingButton=0x7f09004a;
         public static final int shortcut=0x7f09002a;
         public static final int showCustom=0x7f090010;
         public static final int showHome=0x7f090011;
@@ -1786,13 +1793,17 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030015;
         public static final int abc_simple_dropdown_hint=0x7f030016;
         public static final int activity_login=0x7f030017;
-        public static final int food_list_layout=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
-        public static final int take_photo=0x7f03001a;
+        public static final int activity_recipe=0x7f030018;
+        public static final int activity_shopping_list=0x7f030019;
+        public static final int food_list_layout=0x7f03001a;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
+        public static final int take_photo=0x7f03001c;
     }
     public static final class menu {
         public static final int login=0x7f0c0000;
         public static final int main=0x7f0c0001;
+        public static final int recipe=0x7f0c0002;
+        public static final int shopping_list=0x7f0c0003;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1852,19 +1863,21 @@ containing a value of this type.
          */
         public static final int abc_toolbar_collapse_description=0x7f0a0004;
         public static final int action_settings=0x7f0a0012;
-        public static final int action_sign_in=0x7f0a0016;
-        public static final int action_sign_in_short=0x7f0a0017;
+        public static final int action_sign_in=0x7f0a0018;
+        public static final int action_sign_in_short=0x7f0a0019;
         public static final int app_name=0x7f0a0010;
-        public static final int error_field_required=0x7f0a001b;
-        public static final int error_incorrect_password=0x7f0a001a;
-        public static final int error_invalid_email=0x7f0a0018;
-        public static final int error_invalid_password=0x7f0a0019;
+        public static final int error_field_required=0x7f0a001d;
+        public static final int error_incorrect_password=0x7f0a001c;
+        public static final int error_invalid_email=0x7f0a001a;
+        public static final int error_invalid_password=0x7f0a001b;
         public static final int hello_world=0x7f0a0011;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f0a0014;
-        public static final int prompt_password=0x7f0a0015;
+        public static final int prompt_email=0x7f0a0016;
+        public static final int prompt_password=0x7f0a0017;
         public static final int title_activity_login=0x7f0a0013;
+        public static final int title_activity_recipe=0x7f0a0015;
+        public static final int title_activity_shopping_list=0x7f0a0014;
     }
     public static final class style {
         /** 
