@@ -26,15 +26,21 @@ module.exports.policies = {
      *                                                                          *
      ***************************************************************************/
 
-    // '*': true,
-    '*': "authenticated",
-    UserController: {
-        "create": true,
+    '*': 'OAuthValidateAccessToken',
+    OAuthController: {
+        '*': 'OAuthValidateAccessToken',
+        token: 'OAuthPublicClient'
     },
-    AuthController: {
-        '*': true,
-    }
-
+    UsersController: {
+        '*': 'OAuthValidateAccessToken',
+        'register': true,
+        'verify/:email': true
+    },
+    ClientsController: {
+        '*': 'OAuthValidateAccessToken',
+        'register': true,
+        'verify/:email': true
+    },
 
     /***************************************************************************
      *                                                                          *
@@ -50,7 +56,7 @@ module.exports.policies = {
 
     // For the action `nurture`, apply the 'isRabbitMother' policy
     // (this overrides `false` above)
-    // nurture	: 'isRabbitMother',
+    // nurture  : 'isRabbitMother',
 
     // Apply the `isNiceToAnimals` AND `hasRabbitFood` policies
     // before letting any users feed our rabbits
