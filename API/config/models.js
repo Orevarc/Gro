@@ -19,7 +19,9 @@ module.exports.models = {
      ***************************************************************************/
     // connection: 'localDiskDb',
 
-    connection: 'sqlserver'
+    connection: 'sqlserver',
+    autoCreatedAt: false,
+    autoUpdatedAt: false
 
 
     /***************************************************************************
