@@ -42,20 +42,12 @@ module.exports = {
             required: true
         },
 
-        security_level: {
-            type: 'string'
-        },
-
-        scope: {
-            type: 'string'
-        },
-
         calc_expires_in: function() {
             return Math.floor(new Date(this.expiration_date).getTime() / 1000 - new Date().getTime() / 1000);
         },
 
         toJSON: function() {
-            var hiddenProperties = ['id', 'access_token', 'refresh_token', 'code', 'user_id', 'client_id'],
+            var hiddenProperties = ['access_token', 'refresh_token', 'code', 'user_id', 'client_id'],
                 obj = this.toObject();
 
             obj.expires_in = this.expires_in();
@@ -146,6 +138,31 @@ module.exports = {
 
         //if (err) return next(err);
 
+        loadClient({
+            client_id: criteria.client_id
+        }, function(check) {
+            if (check.status) {
+
+            } else {
+                loadUser({
+                    user_id: criteria.user_id
+                }, function(obj) {
+                    if (obj.status) {
+                        Clients.create({
+                            client_id: criteria.client_id,
+                            client_secret: Tokens.generateTokenString(),
+                            email: obj.msg.email
+                        }).then(function(client) {
+                            console.log('CLIENT___________');
+                            console.log(client);
+                        });
+                    } else {
+                        console.log('FAILED');
+                    }
+                });
+            }
+        });
+
         var token = {},
             accessToken,
             $Tokens = API.Model(Tokens);
@@ -168,11 +185,24 @@ module.exports = {
 
 
         return $Tokens.findOrCreate(criteria, token).then(function(retrievedToken) {
-
-
+            // console.log('RETRIEVED---------');
+            // console.log(retrievedToken);
+            // console.log('-=-=-=-=-=-=-ACCESS-==-=-=-=-=-=');
+            // console.log(accessToken);
+            // console.log('CRITERA---------');
+            // console.log(criteria);
+            console.log('TOKEN-=-+-+-+-+-+-+--');
+            console.log(token);
             if (retrievedToken.access_token != accessToken) {
                 return $Tokens.update(criteria, token).then(function(updatedTokens) {
-                    return updatedTokens[0];
+                    // console.log('-------------UPDATED---------');
+                    //console.log(updatedTokens[0]);
+                    return Tokens.findOne({
+                        user_id: criteria.user_id
+                    }).then(function(token) {
+                        return token;
+                    });
+                    //return updatedTokens[0];
                 });
             }
             return retrievedToken;
@@ -180,3 +210,41 @@ module.exports = {
 
     }
 };
+
+function loadUser(user_id, cb) {
+    // console.log('USER_ID: ');
+    // console.log(user_id.user_id);
+    Users.findOne({
+        id: user_id.user_id
+    }).then(function(user) {
+        // console.log('USER--------: ');
+        // console.log(user);
+        if (user) {
+            cb({
+                status: true,
+                msg: user
+            });
+        }
+    });
+}
+
+function loadClient(client_id, cb) {
+    // console.log('CLIENT_ID: ');
+    // console.log(client_id.client_id);
+    Clients.findOne({
+        client_id: client_id.client_id
+    }).then(function(client) {
+        // console.log('CLIENT--------: ');
+        // console.log(client);
+        if (client) {
+            cb({
+                status: true,
+                msg: client
+            });
+        } else {
+            cb({
+                status: false
+            });
+        }
+    });
+}
