@@ -15,7 +15,8 @@ transporter = mailer.createTransport({
 
 emailGeneratedCode = function(options) {
     var url = options.verifyURL,
-        email = options.email;
+        email = options.email,
+        client_id = options.client_id;
 
 
     message = 'Hello!';
@@ -39,6 +40,7 @@ emailGeneratedCode = function(options) {
     });
 
     return {
+        client_id: client_id,
         url: url
     }
 };
@@ -69,7 +71,8 @@ module.exports = {
                 id: context.id,
                 type: context.type,
                 verifyURL: sails.config.security.server.url + "/users/verify/" + data.email + "?code=" + token.code,
-                email: data.email
+                email: data.email,
+                client_id: token.client_id
             });
         });
 
