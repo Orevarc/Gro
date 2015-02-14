@@ -24,7 +24,7 @@ If it asks you to enter in a number, enter 1.
 
 The server is now running on:
 ```
-localhost:1337/
+localhost:1336/
 ```
 
 Enter that URL into your browser and see if you get a webpage. Now you know the server is running.

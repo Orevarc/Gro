@@ -8,8 +8,8 @@ module.exports.security = {
     },
     admin: {
         email: {
-            address: 'mjcravero@gmail.com',
-            password: 'founders1'
+            address: 'groappinfo@gmail.com',
+            password: 'tottenham12'
         },
 
     },
