@@ -32,7 +32,7 @@ emailGeneratedCode = function(options) {
     transporter.sendMail({
         from: sails.config.security.admin.email.address,
         to: email,
-        subject: 'Canadian Tire App Account Registration',
+        subject: 'Gro App Account Registration',
         html: message
     }, function(err, info) {
         console.log("Email Response:", info);
@@ -63,6 +63,8 @@ module.exports = {
                 client_id: Tokens.generateTokenString()
             });
         }).then(function(token) {
+            console.log("Register Token: ");
+            console.log(token);
             return emailGeneratedCode({
                 id: context.id,
                 type: context.type,
@@ -104,7 +106,6 @@ module.exports = {
             context.id = client.client_id;
             context.type = 'Client ID';
             console.log(client);
-            console.log(context);
             return Tokens.generateToken({
                 client_id: client.client_id
             });
