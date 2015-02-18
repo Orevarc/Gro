@@ -6,6 +6,7 @@
  */
 
 module.exports = {
-	
+    getAllItems: function(req, res) {
+        API(FoodPage.getUserItems, req, res);
+    }
 };
-
