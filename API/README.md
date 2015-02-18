@@ -93,5 +93,59 @@ BODY:
 Unauthorized
 ```
 
+<p>______________________________________________________________________</p>
+<b><u>Grabbing a User's Food Items:</b></u>
+To gran a list of food items associated with a user, simply send an HTTP GET request to:
+```
+http://localhost:1336/useritems
+```
+This GET request should have a custum authorization header with the following key:value pair:
+```
+Authorization : Bearer <received access token>
+```
+STATUS CODE: 200
+BODY:
+[{
+    "ownershipID": 1,
+    "user_id": 103,
+    "foodItemID": [
+        1,
+        1
+    ],
+    "dateBought": "2015-02-17T00:00:00.000Z",
+    "expiryDate": "2015-03-03T00:00:00.000Z",
+    "used": 0,
+    "upcCode": "05700000299",
+    "itemName": "Heinz Ketchup",
+    "foodCategoryID": [
+        41,
+        41
+    ],
+    "id": null,
+    "factualCategory": "Condiments",
+    "generalCategory": "Condiments, Spices & Sauces",
+    "expiryTime": null
+}, {
+    "ownershipID": 2,
+    "user_id": 103,
+    "foodItemID": [
+        52,
+        52
+    ],
+    "dateBought": "2015-02-17T00:00:00.000Z",
+    "expiryDate": "2015-03-03T00:00:00.000Z",
+    "used": 0,
+    "upcCode": "4309",
+    "itemName": "LYCHEES",
+    "foodCategoryID": [
+        39,
+        39
+    ],
+    "id": null,
+    "factualCategory": "Fruits",
+    "generalCategory": "Fruits & Vegtables",
+    "expiryTime": 5
+}]
+```
 
 

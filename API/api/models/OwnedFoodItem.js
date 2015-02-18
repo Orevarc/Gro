@@ -8,6 +8,38 @@
 module.exports = {
 
     attributes: {
+        user_id: {
+            model: 'users'
+        },
 
+        foodItemID: {
+            model: 'fooditem'
+        },
+
+        dateBought: {
+            type: 'date',
+        },
+
+        expiryDate: {
+            type: 'date'
+        },
+
+        used: {
+            type: 'int'
+        },
+
+        toJSON: function() {
+
+            var obj = this.toObject();
+
+            return obj;
+        }
+
+    },
+
+    beforeCreate: function(ownedfooditem, next) {
+        ownedfooditem.dateBought = new Date();
+        ownedfooditem.used = 0;
+        next();
     }
 };

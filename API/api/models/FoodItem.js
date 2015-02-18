@@ -8,22 +8,25 @@
 module.exports = {
 
     attributes: {
-        UPCCode: {
-            type: 'int',
+        foodItemID: {
+
+        },
+        upcCode: {
+            type: 'string',
             required: true
         },
-        name: {
+        itemName: {
+            type: 'string',
+            required: true
+        },
+        foodCategoryID: {
             type: 'string',
         },
-        brand: {
-            type: 'string',
-        },
-        category: {
-            type: 'string',
-        },
-        expectedExpiry: {
-            type: 'int',
-        }
+        toJSON: function() {
 
+            var obj = this.toObject();
+
+            return obj;
+        }
     }
 };

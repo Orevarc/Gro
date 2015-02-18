@@ -34,7 +34,12 @@ module.exports.routes = {
 
     '/': {
         view: 'homepage'
-    }
+    },
+
+    'GET /useritems': 'FoodPageController.getAllItems',
+
+
+
 
     /***************************************************************************
      *                                                                          *

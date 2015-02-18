@@ -6,6 +6,7 @@ var Promise = require('bluebird'),
     API;
 
 sendResult = function(request, response) {
+    console.log('SENDING RESULT');
     return function(result) {
         // Assume the response has already been sent if a null(ish) result
         if (result == null) return;
@@ -21,6 +22,7 @@ sendResult = function(request, response) {
 };
 
 sendError = function(request, response) {
+    console.log('Error Encountered');
     return function(err) {
         var str,
             errTypes = ['unauthorized4', 'forbidden', 'invalid', 'internal'],
