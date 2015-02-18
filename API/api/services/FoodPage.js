@@ -1,6 +1,8 @@
 var Promise = require('bluebird'),
     promisify = Promise.promisify;
 
+lookupUPC = function(options) {};
+
 module.exports = {
     getUserItems: function(data, context) {
         var user_id = context.identity.id;
@@ -12,11 +14,21 @@ module.exports = {
             console.log(ownedfooditem);
             return ownedfooditem;
         });
-        // return OwnedFoodItem.find({
-        //     user_id: user_id,
-        //     used: 0
-        // }).populate('user_id');
-        // console.log(items);
-        // return items;
+    },
+
+    postListItems: function(data, context) {
+        console.log(JSON.parse(data.items));
+        var items = JSON.parse(data.items);
+        var index = [];
+
+        for (var x in items) {
+            index.push(x);
+            console.log(x);
+        }
+        var masterList;
+        for (var i = 0; i < items.length; i++) {
+            var upc = items[i]["upc"];
+            console.log(upc);
+        }
     }
 }

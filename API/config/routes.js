@@ -37,6 +37,8 @@ module.exports.routes = {
     },
 
     'GET /useritems': 'FoodPageController.getAllItems',
+    'POST /additems': 'FoodPageController.postListItems',
+
 
 
 
