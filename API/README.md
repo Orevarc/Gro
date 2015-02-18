@@ -103,6 +103,8 @@ This GET request should have a custum authorization header with the following ke
 ```
 Authorization : Bearer <received access token>
 ```
+If everything went okay, you should recieve back the following response:
+```
 STATUS CODE: 200
 BODY:
 [{
