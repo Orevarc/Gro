@@ -9,13 +9,11 @@ module.exports = {
 
     attributes: {
         user_id: {
-            type: 'int',
-            required: true
+            model: 'users'
         },
 
-        foodItemId: {
-            type: 'int',
-            required: true
+        foodItemID: {
+            model: 'fooditem'
         },
 
         dateBought: {
@@ -33,7 +31,6 @@ module.exports = {
         toJSON: function() {
 
             var obj = this.toObject();
-            delete obj.password;
 
             return obj;
         }
