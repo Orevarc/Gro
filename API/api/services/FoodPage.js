@@ -1,7 +1,19 @@
 var Promise = require('bluebird'),
     promisify = Promise.promisify;
 
-lookupUPC = function(options) {};
+lookupUPC = function(options) {
+    var $FoodItem = API.Model(FoodItem);
+    var upc = options.upc;
+    console.log('IN UPC');
+
+    return FoodItem.findOne({
+        upcCode: upc
+    }).then(function(fooditem) {
+        console.log('----Item');
+        console.log(fooditem);
+        return fooditem;
+    });
+};
 
 module.exports = {
     getUserItems: function(data, context) {
@@ -20,15 +32,16 @@ module.exports = {
         console.log(JSON.parse(data.items));
         var items = JSON.parse(data.items);
         var index = [];
-
-        for (var x in items) {
-            index.push(x);
-            console.log(x);
-        }
         var masterList;
         for (var i = 0; i < items.length; i++) {
             var upc = items[i]["upc"];
             console.log(upc);
+            var test = lookupUPC({
+                upc: upc
+            });
+            console.log("TESTING");
+            console.log(test);
+
         }
     }
 }
