@@ -8,5 +8,8 @@
 module.exports = {
     getAllItems: function(req, res) {
         API(FoodPage.getUserItems, req, res);
+    },
+    postListItems: function(req, res) {
+        API(FoodPage.postListItems, req, res);
     }
 };

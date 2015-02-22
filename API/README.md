@@ -95,7 +95,7 @@ Unauthorized
 
 <p>______________________________________________________________________</p>
 <b><u>Grabbing a User's Food Items:</b></u>
-To gran a list of food items associated with a user, simply send an HTTP GET request to:
+To grab a list of food items associated with a user, simply send an HTTP GET request to:
 ```
 http://localhost:1336/useritems
 ```
@@ -150,4 +150,42 @@ BODY:
 }]
 ```
 
+<p>______________________________________________________________________</p>
+<b><u><p>Posting Food Items:</p></b></u>
+To post a list of food items, send an HTTP POST request to:
+```
+http://localhost:1336/additems
+```
+This POST request should have a custum authorization header with the following key:value pair:
+```
+Authorization : Bearer <received access token>
+```
+It should also contain key:value parameters for the items that need to be added. The paramter should be in the form of:
+```
+key: items
+value: { upc: '05980021692', name: 'Name' },
+  { upc: '06563316979', name: 'name2' }
+```
+<u>****Check out HTTPTest under the POST request section for how to package a series of items into this format***</u>
+
+<p> If everything went okay, you should recieve back the following response with a list of food items and their info: </p>
+```
+STATUS CODE: 200
+BODY:
+[{
+    "foodItemID": 2,
+    "upcCode": "05980021692",
+    "itemName": "Kit Kat Chunky",
+    "factualCategory": "Baking Ingredients",
+    "generalCategory": "Miscellaneous",
+    "expiryTime": null
+}, {
+    "foodItemID": 3,
+    "upcCode": "06563316979",
+    "itemName": "Sweet & Salty Roasted Nuts",
+    "factualCategory": "Nuts",
+    "generalCategory": "Snacks",
+    "expiryTime": null
+}]
+```
 
