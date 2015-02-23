@@ -1,8 +1,6 @@
 var Promise = require('bluebird'),
     promisify = Promise.promisify;
-// function lookupUPC(options) {
 
-// };
 var foodPage = function() {};
 
 
@@ -20,13 +18,9 @@ lookupUPC = function(options) {
             var query2 = "SELECT FoodItem.foodItemID, FoodItem.upcCode, FoodItem.itemName, FoodCategory.factualCategory, FoodCategory.generalCategory, FoodCategory.expiryTime FROM FoodItem INNER JOIN FoodCategory ON FoodItem.foodCategoryID = FoodCategory.foodCategoryID WHERE CAST(upcCode as numeric(13,0)) = " + upc;
             var queryAsync = Promise.promisify(FoodItem.query);
             queryAsync(query2).then(function(fooditem) {
-                //var item = JSON.parse(fooditem);
                 var date = new Date();
                 var expiry = new Date();
                 var foodID = fooditem[0].foodItemID;
-                console.log('----FoodItem1' + fooditem[0].foodItemID);
-                console.log(fooditem);
-
                 if (fooditem[0].expiryTime != null) {
                     expiry.setDate(expiry.getDate() + fooditem[0].expiryTime);
                 } else {
@@ -40,22 +34,35 @@ lookupUPC = function(options) {
                     expiryDate: expiry,
                     used: 0
                 }).then(function(ownedfooditem) {
-                    console.log('----FoodItem2');
-                    console.log(fooditem[0]);
-                    console.log('----OWNEDFOODItem----------');
-                    console.log(ownedfooditem);
-                    console.log('Before' + requests);
+                    // console.log('----FoodItem2');
+                    // console.log(fooditem[0]);
+                    // console.log('----OWNEDFOODItem----------');
+                    // console.log(ownedfooditem);
+                    // console.log('Before' + requests);
                     requests--;
-                    console.log('After' + requests);
                     masterList.push(fooditem[0]);
-                    console.log('Before Function ' + requests);
                     if (requests == 0) {
                         console.log('MASTER' + masterList);
-                        resolve(masterList);
+                        resolve({
+                            success: true,
+                            items: masterList
+                        });
                     }
+                }).catch(function(e) {
+                    resolve({
+                        success: false,
+                        message: "Error adding item to User's list",
+                        error: e
+                    });
                 });
 
 
+            }).catch(function(e) {
+                resolve({
+                    success: false,
+                    message: "Error finding item with upc",
+                    error: e
+                });
             });
 
 
@@ -65,8 +72,6 @@ lookupUPC = function(options) {
 
 };
 
-var fP = new foodPage();
-module.exports = new foodPage;
 module.exports = {
 
     getUserItems: function(data, context) {
@@ -77,30 +82,88 @@ module.exports = {
 
         return queryAsync(query1).then(function(ownedfooditem) {
             console.log(ownedfooditem);
-            return ownedfooditem;
-        }, function(failure) {
+            return {
+                success: true,
+                items: ownedfooditem
+            };
+        }).catch(function(e) {
             return {
                 success: false,
-                data: "Error retreiving items"
-            }
+                message: "Could not retireve user's items",
+                error: e
+            };
         });
     },
 
 
     postListItems: function(data, context) {
-        console.log(JSON.parse(data.items));
-        console.log('USER');
-        console.log(context.identity.id);
         var items = JSON.parse(data.items);
-        var index = [];
-        var masterList = [];
-        var requests = 0;
         return lookupUPC({
             items: items,
             user_id: context.identity.id
         }).then(function(fooditems) {
             console.log('KKK ' + fooditems);
             return fooditems;
+        });
+    },
+
+    postItem: function(data, context) {
+        console.log(JSON.parse(data.items));
+        console.log('USER');
+        console.log(context.identity.id);
+        var items = JSON.parse(data.items);
+        return lookupUPC({
+            items: items,
+            user_id: context.identity.id
+        }).then(function(fooditems) {
+            console.log('KKK ' + fooditems);
+            return fooditems;
+        });
+    },
+    markUsed: function(data, context) {
+        var items = JSON.parse(data.items);
+        if (items.mark != 1) {
+            return {
+                success: false,
+                message: "Wrong number sent for used",
+                error: null
+            };
+        }
+        var queryUsed = "UPDATE OwnedFoodItem SET used = " + items.mark + "WHERE ownershipID = " + items.ownershipID;
+        var queryAsync = Promise.promisify(OwnedFoodItem.query);
+        return queryAsync(queryUsed).then(function(used) {
+            return {
+                success: true
+            };
+        }).catch(function(e) {
+            return {
+                success: false,
+                message: "Could not mark used",
+                error: e
+            };
+        });
+    },
+    markWasted: function(data, context) {
+        var items = JSON.parse(data.items);
+        if (items.mark != 2) {
+            return {
+                success: false,
+                message: "Wrong number sent for wasted",
+                error: null
+            };
+        }
+        var queryWasted = "UPDATE OwnedFoodItem SET used = " + items.mark + "WHERE ownershipID = " + items.ownershipID;
+        var queryAsync = Promise.promisify(OwnedFoodItem.query);
+        return queryAsync(queryWasted).then(function(wasted) {
+            return {
+                success: true
+            };
+        }).catch(function(e) {
+            return {
+                success: false,
+                message: "Could not mark wasted",
+                error: e
+            };
         });
     }
 };
