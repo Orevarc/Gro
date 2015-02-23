@@ -38,6 +38,9 @@ module.exports.routes = {
 
     'GET /useritems': 'FoodPageController.getAllItems',
     'POST /additems': 'FoodPageController.postListItems',
+    'POST /additem': 'FoodPageController.postItem',
+    'POST /markused': 'FoodPageController.markUsed',
+    'POST /markwasted': 'FoodPageController.markWasted',
 
 
 

@@ -23,8 +23,8 @@ The client will recieve the following back if registration went successfully:
 STATUS CODE: 200
 BODY:
 {
-	"client_id": <client_id>,
-	"url": "http://localhost:1336/users/verify/<your email>?code=Y087VfF3bbHmNrQaRsAfOB8srfNB0gDW"
+ "client_id": <client_id>,
+ "url": "http://localhost:1336/users/verify/<your email>?code=Y087VfF3bbHmNrQaRsAfOB8srfNB0gDW"
 }
 ```
 The ```client_id``` should be saved to the user's device (maybe in the User class on the phone but I dunno). The ```url``` is just the verification link that gets sent to their email. In order to login, the user must click the link sent to their account.
@@ -61,8 +61,8 @@ STATUS CODE: 200
 STATUS CODE: 403
 BODY:
 {
-	"error": "invalid_grant",
-	"error_description": "Invalid resource owener credentials"
+ "error": "invalid_grant",
+ "error_description": "Invalid resource owener credentials"
 }
 ```
 <p><b><u>Making a request to the server with the obtained credentials</b></u></p>
@@ -94,7 +94,7 @@ Unauthorized
 ```
 
 <p>______________________________________________________________________</p>
-<b><u>Grabbing a User's Food Items:</b></u>
+<b><u><p>Grabbing a User's Food Items:</p></u></b>
 To grab a list of food items associated with a user, simply send an HTTP GET request to:
 ```
 http://localhost:1336/useritems
@@ -107,7 +107,9 @@ If everything went okay, you should recieve back the following response:
 ```
 STATUS CODE: 200
 BODY:
-[{
+{
+    "success": true,
+    "items": [{
     "ownershipID": 1,
     "user_id": 103,
     "foodItemID": [
@@ -148,10 +150,20 @@ BODY:
     "generalCategory": "Fruits & Vegtables",
     "expiryTime": 5
 }]
+}
+```
+
+If any error occured it will be sent back in the following form:
+```
+{
+    "success": false,
+    "message": <Error Message>",
+    "error": <Error>
+}
 ```
 
 <p>______________________________________________________________________</p>
-<b><u><p>Posting Food Items:</p></b></u>
+<b><u><p>***Posting Food Items:</p></u></b>
 To post a list of food items, send an HTTP POST request to:
 ```
 http://localhost:1336/additems
@@ -172,7 +184,9 @@ value: { upc: '05980021692', name: 'Name' },
 ```
 STATUS CODE: 200
 BODY:
-[{
+{
+    "success": true,
+    "items": [{
     "foodItemID": 2,
     "upcCode": "05980021692",
     "itemName": "Kit Kat Chunky",
@@ -188,4 +202,11 @@ BODY:
     "expiryTime": null
 }]
 ```
-
+If any error occured it will be sent back in the following form:
+```
+{
+    "success": false,
+    "message": <Error Message>",
+    "error": <Error>
+}
+```
