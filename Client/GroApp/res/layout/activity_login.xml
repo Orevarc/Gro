@@ -71,7 +71,7 @@
             android:layout_alignParentRight="true"
             android:background="#649b3f"
             android:height="100dp"
-            android:onClick="goToMain"
+            android:onClick="onLoginClick"
             android:text="@string/action_sign_in_short"
             android:textColor="@color/white"
             android:textSize="@dimen/abc_text_size_large_material"

@@ -1,18 +1,28 @@
 package com.groteam4450.gro;
 
 import android.support.v7.app.ActionBarActivity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 public class Login extends ActionBarActivity {
 
+	HttpClient httpClient = new HttpClient();
+	HttpResponseParser httpParser = new HttpResponseParser();
+	EditText username;
+	EditText password;
+	String loginResponse;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		
 	}
 
 	@Override
@@ -34,9 +44,32 @@ public class Login extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void goToMain(View view) {
-		Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
-		startActivity(myIntent);
+	//Method used to verify login. The onclick sends a post request to the server using HttpClient.java 
+	//and then parses the response for a successful login
+	public void onLoginClick() throws Exception {
+		username = (EditText) findViewById(R.id.username);
+		password = (EditText) findViewById(R.id.password);
+		
+		loginResponse = httpClient.loginSendPost("VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh", username.getText().toString(), password.getText().toString());
+		
+		if (httpParser.parseLoginResponse(loginResponse)) 
+		{
+			Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
+			startActivity(myIntent);
+		}
+		else
+		{
+			new AlertDialog.Builder(this)
+		    .setTitle("Login Unsuccessful")
+		    .setMessage("Please check your information and try again")
+		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		            // continue with delete
+		        }
+		     })
+		    .setIcon(android.R.drawable.ic_dialog_alert)
+		     .show();
+		}
 	}
 	
 	@Override
