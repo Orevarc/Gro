@@ -237,10 +237,11 @@ public class PhotoCaptureExample extends Activity {
     }
     
 	public void onRequestClick(View view) throws Exception {
-		String url = "oauth/token";
+		String url = "users/current";
 		
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		String authString = settings.getString ("token", "");
+		System.out.println(authString);
 		
 		Header[] headers = {
 				new BasicHeader("Authorization","Bearer " + authString)
@@ -261,8 +262,8 @@ public class PhotoCaptureExample extends Activity {
 	
 	public void requestAlert (String info) {
 		new AlertDialog.Builder(this)
-	    .setTitle("Login Unsuccessful")
-	    .setMessage("Please check your information and try again")
+	    .setTitle("Mike...is gay")
+	    .setMessage(info)
 	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) { 
 	            // continue with delete
