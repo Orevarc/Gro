@@ -19,8 +19,8 @@ public class FoodItem extends BasicFoodItem{
 	
 	public FoodItem (String ownershipID, String expiryDate, String upcCode, String itemName, String factualCategory, String generalCategory) {
 		this.ownershipID = ownershipID;
-		this.itemName = itemName;
-		this.upcCode = upcCode;
+		this.name = itemName;
+		this.upc = upcCode;
 		this.generalCategory = generalCategory;
 		this.factualCategory = factualCategory;
 		this.expiryDate = expiryDate;

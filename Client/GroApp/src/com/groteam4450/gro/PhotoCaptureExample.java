@@ -67,6 +67,7 @@ public class PhotoCaptureExample extends Activity {
 	protected ArrayList<FoodItem> ownedFoodList;
 	protected ArrayList<BasicFoodItem> addedFoodList; //converts food list items into basic items to send with HTTP Post
 	protected ListView foodListView;
+	protected FoodItemAdapter arrayAdapter;
 	
 	protected static final String PHOTO_TAKEN	= "photo_taken";
 		
@@ -91,17 +92,6 @@ public class PhotoCaptureExample extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
-        
-        foodListView.setAdapter(arrayAdapter);
     }
     
     public class ButtonClickHandler implements View.OnClickListener 
@@ -135,12 +125,17 @@ public class PhotoCaptureExample extends Activity {
     			break;
     			
     		case -1:
-    			onPhotoTaken();
+			try {
+				onPhotoTaken();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     			break;
     	}
     }
     
-    protected void onPhotoTaken()
+    protected void onPhotoTaken() throws Exception
     {
     	Log.i( "MakeMachine", "onPhotoTaken" );
     	
@@ -196,7 +191,12 @@ public class PhotoCaptureExample extends Activity {
     protected void onRestoreInstanceState( Bundle savedInstanceState){
     	Log.i( "MakeMachine", "onRestoreInstanceState()");
     	if( savedInstanceState.getBoolean( PhotoCaptureExample.PHOTO_TAKEN ) ) {
-    		onPhotoTaken();
+    		try {
+				onPhotoTaken();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
     
@@ -206,10 +206,15 @@ public class PhotoCaptureExample extends Activity {
     }
     
 	public void OCR(View view) {
-		onPhotoTaken();
+		try {
+			onPhotoTaken();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
     
-    public void performOCR()
+    public void performOCR() throws Exception
     {
     	String filepath = "/storage/sdcard0/InitialOCR/OCRTextCaptured.txt";
     	System.out.println("Performing OCR");
@@ -230,15 +235,15 @@ public class PhotoCaptureExample extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	afterOCR(filepath);
     }
     
     public void afterOCR(String filepath) throws Exception 
     {
     	addedFoodList = receiptParser.parseTextToArray(filepath);
     	postFoodItems();
-    	getFoodItems();
-    	addedFoodList = new ArrayList<BasicFoodItem>();
-    	initFoodList();
+//    	addedFoodList = new ArrayList<BasicFoodItem>();
     }
     
     public void postFoodItems() throws Exception 
@@ -258,12 +263,14 @@ public class PhotoCaptureExample extends Activity {
     	httpClient.postAuth(url, headers, params, new JsonHttpResponseHandler() {
 			 @Override
 	            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-					try {
-						JSONArray itemArray = response.getJSONArray("items");
-						
-						populateOwnedFoodItems(itemArray);
+					try {				
+						System.out.println("SUCCESS ON FOOD ITEM POST");
+						getFoodItems();
 						
 					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -284,8 +291,9 @@ public class PhotoCaptureExample extends Activity {
 	            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 					try {
 						JSONArray itemArray = response.getJSONArray("items");
-						
+
 						populateOwnedFoodItems(itemArray);
+						initFoodList();
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -296,14 +304,14 @@ public class PhotoCaptureExample extends Activity {
 	}
 	
 	public void populateOwnedFoodItems (JSONArray itemArray) throws JSONException {
-
+		ownedFoodList = new ArrayList<FoodItem>();
 		for (int i = 0; i<itemArray.length(); i++) {
 			JSONObject object = itemArray.getJSONObject(i);
 			
 			FoodItem item = new FoodItem(object.get("ownershipID").toString(), object.get("expiryDate").toString(), 
 					object.get("upcCode").toString(), object.get("itemName").toString(), object.get("factualCategory").toString(),
 					object.get("generalCategory").toString());
-			System.out.println(item.itemName);
+			System.out.println(item.name);
 			
 			ownedFoodList.add(item);
 		}
@@ -316,7 +324,7 @@ public class PhotoCaptureExample extends Activity {
 	}
 	
 	public void initFoodList() {
-        FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
+        arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
         
         foodListView.setAdapter(arrayAdapter);
 	}

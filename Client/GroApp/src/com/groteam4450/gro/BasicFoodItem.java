@@ -2,8 +2,8 @@ package com.groteam4450.gro;
 
 public class BasicFoodItem {
 
-	String upcCode;
-	String itemName;
+	String upc;
+	String name;
 	
 	public static void main(String[] args) {
 
@@ -15,8 +15,8 @@ public class BasicFoodItem {
 	
 	public BasicFoodItem(String upcCode, String name)
 	{
-		this.upcCode = upcCode;
-		this.itemName = name;
+		this.upc = upcCode;
+		this.name = name;
 	}
 
 }

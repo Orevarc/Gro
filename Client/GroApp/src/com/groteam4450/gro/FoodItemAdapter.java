@@ -13,7 +13,7 @@ import android.widget.TextView;
 	    @Override	    public View getView(int position, View convertView, ViewGroup parent) {	       // Get the data item for this position	       FoodItem food = getItem(position);    
 	       	       // Check if an existing view is being reused, otherwise inflate the view	       if (convertView == null) {	          convertView = LayoutInflater.from(getContext()).inflate(R.layout.food_list_layout, parent, false);	       }
 	       	       // Lookup view for data population	       TextView foodName = (TextView) convertView.findViewById(R.id.foodName);
-	       TextView foodExpiry = (TextView) convertView.findViewById(R.id.foodExpiry);	       // Populate the data into the template view using the data object	       foodName.setText(food.itemName);
+	       TextView foodExpiry = (TextView) convertView.findViewById(R.id.foodExpiry);	       // Populate the data into the template view using the data object	       foodName.setText(food.name);
 	      // foodName.setTypeface("");
 	       foodExpiry.setText(food.expiryDate);	       // Return the completed view to render on screen	       return convertView;	   }
 	}		

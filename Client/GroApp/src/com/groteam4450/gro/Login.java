@@ -96,6 +96,11 @@ public class Login extends ActionBarActivity {
 					
 					storeSharedPreferences(authString);
 	            }
+			 
+			 @Override
+			   public void onFailure(int statusCode, Header[] headers,  Throwable e, JSONObject errorResponse){
+			 		badLoginAlert();
+			 	}
 	            
 	        });	
 	}
