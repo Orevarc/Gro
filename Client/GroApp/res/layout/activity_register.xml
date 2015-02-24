@@ -8,10 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.groteam4450.gro.RegisterActivity" >
-
+    tools:context="com.groteam4450.gro.Register" >
     <!-- Login progress -->
-
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -19,49 +17,53 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="30dp"
         android:src="@drawable/logo" />
-
     <RelativeLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:orientation="vertical" >
-        <EditText
+        
+                <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:ems="10"
             android:gravity="center_vertical|start"
-            android:hint="@string/prompt_email"
+            android:hint="@string/new_username"
             android:inputType="text"
             android:maxLines="1"
-            android:singleLine="true" >
-
-            <requestFocus />
-        </EditText>
-
+            android:singleLine="true" />
+        <TextView
+            android:id="@+id/password_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/password"
+            android:text="Password must be minimum 8 characters long"
+            android:textSize="10dp" />
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/username"
+            android:layout_below="@id/password_help_text"
             android:layout_marginTop="20dp"
             android:ems="10"
-            android:hint="@string/prompt_password"
+            android:hint="@string/new_email"
             android:imeActionId="@+id/login"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true" />
-
         <Button
             android:id="@+id/sign_in_button"
             style="?android:textAppearanceSmall"
@@ -71,36 +73,26 @@
             android:layout_alignParentRight="true"
             android:background="#649b3f"
             android:height="100dp"
-            android:onClick="onLoginClick"
-            android:text="@string/action_sign_in_short"
+            android:onClick="onRegisterClick"
+            android:text="Register"
             android:textColor="@color/white"
             android:textSize="@dimen/abc_text_size_large_material"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/forgotPassword"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/password"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/password"
-            android:layout_marginTop="15dp"
-            android:paddingLeft="4dp"
-            android:text="Forgot your password?"
-            android:textColor="@color/blue" />
-
-         <TextView
-             android:id="@+id/register"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignLeft="@id/password"
-             android:layout_alignParentLeft="true"
-             android:layout_below="@+id/password"
-             android:layout_marginTop="45dp"
-             android:paddingLeft="4dp"
-             android:text="Register new account"
-             android:textColor="@color/blue" />
-
+            android:layout_below="@+id/username"
+            android:ems="10"
+            android:hint="@string/new_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" >
+            <requestFocus />
+        </EditText>
     </RelativeLayout>
-
 </LinearLayout>

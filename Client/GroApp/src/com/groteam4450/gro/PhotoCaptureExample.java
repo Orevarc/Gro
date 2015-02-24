@@ -178,6 +178,12 @@ public class PhotoCaptureExample extends Activity
     	}
     	bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
     	performOCR();
+    	try {
+			ReceiptParser.parseTextToArray("/storage/sdcard0/InitialOCR/OCRTextCaptured.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     @Override 

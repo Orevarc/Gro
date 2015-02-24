@@ -24,8 +24,9 @@ import android.widget.EditText;
 public class Login extends ActionBarActivity {
 	
 	AsyncHttpClient client = new AsyncHttpClient();
+	
 
-	HttpClient httpClient = new HttpClient();
+	HTTPRestClient httpClient = new HTTPRestClient();
 	HttpResponseParser httpParser = new HttpResponseParser();
 	EditText username;
 	EditText password;
@@ -58,18 +59,22 @@ public class Login extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	public void goToRegister(View view) {
+		Intent myIntent = new Intent(Login.this, Register.class);
+		startActivity(myIntent);
+	}
+	
 	//Method used to verify login. The onclick sends a post request to the server using HttpClient.java 
 	//and then parses the response for a successful login
-	public void onLoginClick() throws Exception {
+	public void onLoginClick(View view) throws Exception {
 		String url = "oauth/token";
-		
 		RequestParams params = new RequestParams();
 		params.put("client_id", "VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh");
 		params.put("grant_type", "password");
 		params.put("username", username.getText().toString());
 		params.put("password", password.getText().toString());
 		
-		client.post(url, params, new AsyncHttpResponseHandler() {
+		httpClient.post(url, params, new AsyncHttpResponseHandler() {
 			 @Override
 	            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
 				 	Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
@@ -79,6 +84,7 @@ public class Login extends ActionBarActivity {
 	            @Override
 	            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable e) {
 	            	badLoginAlert();
+	            	System.out.println(e.getMessage());
 	            }
 	        });	
 	}

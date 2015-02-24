@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="password_help_text">Password must be min. 8 characters long</string>
+    
+	<string name="new_username">Username</string>
+	<string name="new_password">Password</string>
+	<string name="new_email">Email Address</string>
+	
+	<string name="register_title">Register</string>
+    
+</resources>

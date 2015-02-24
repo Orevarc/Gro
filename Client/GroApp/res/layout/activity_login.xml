@@ -98,6 +98,8 @@
              android:layout_below="@+id/password"
              android:layout_marginTop="45dp"
              android:paddingLeft="4dp"
+             android:onClick="goToRegister"
+             android:clickable="true"
              android:text="Register new account"
              android:textColor="@color/blue" />
 

@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-async-http-1.4.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Eric/Downloads/android-async-http-1.4.7-20140913.114611-2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
