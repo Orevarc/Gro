@@ -2,7 +2,10 @@ package com.groteam4450.gro;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,20 +26,32 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
+
 import com.googlecode.tesseract.android.TessBaseAPI;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class PhotoCaptureExample extends Activity 
-{
+public class PhotoCaptureExample extends Activity {
+	
+	AsyncHttpClient client = new AsyncHttpClient();
+
+	HTTPRestClient httpClient = new HTTPRestClient();
+	
 	protected ImageButton _button;
 	//protected ImageView _image;
 	protected String _path;
@@ -178,12 +193,6 @@ public class PhotoCaptureExample extends Activity
     	}
     	bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
     	performOCR();
-    	try {
-			ReceiptParser.parseTextToArray("/storage/sdcard0/InitialOCR/OCRTextCaptured.txt");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
     
     @Override 
@@ -226,6 +235,42 @@ public class PhotoCaptureExample extends Activity
     	
     	
     }
+    
+	public void onRequestClick(View view) throws Exception {
+		String url = "oauth/token";
+		
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		String authString = settings.getString ("token", "");
+		
+		Header[] headers = {
+				new BasicHeader("Authorization","Bearer " + authString)
+		};
+		
+		httpClient.getAuth(url, headers, null, new AsyncHttpResponseHandler() {
+			 @Override
+	            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+				 	requestAlert(response.toString());
+	            }
+	            
+	            @Override
+	            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable e) {
+	            	
+	            }
+	        });	
+	}
+	
+	public void requestAlert (String info) {
+		new AlertDialog.Builder(this)
+	    .setTitle("Login Unsuccessful")
+	    .setMessage("Please check your information and try again")
+	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // continue with delete
+	        }
+	     })
+	    .setIcon(android.R.drawable.ic_dialog_alert)
+	     .show();
+	}
     
 	public void goToRecipe(View view) {
 		Intent myIntent = new Intent(PhotoCaptureExample.this, Recipe.class);

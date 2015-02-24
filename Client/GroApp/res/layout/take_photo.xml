@@ -38,7 +38,7 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/fridgeButton"
         android:background="@drawable/chef31"
-         android:onClick="goToRecipe" />
+         android:onClick="onRequestClick" />
 
     <ImageButton
         android:id="@+id/shoppingButton"

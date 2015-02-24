@@ -4,6 +4,7 @@ import java.net.URL;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -15,7 +16,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +27,6 @@ import android.widget.EditText;
 public class Login extends ActionBarActivity {
 	
 	AsyncHttpClient client = new AsyncHttpClient();
-	
 
 	HTTPRestClient httpClient = new HTTPRestClient();
 	HttpResponseParser httpParser = new HttpResponseParser();
@@ -66,27 +68,40 @@ public class Login extends ActionBarActivity {
 	
 	//Method used to verify login. The onclick sends a post request to the server using HttpClient.java 
 	//and then parses the response for a successful login
-	public void onLoginClick(View view) throws Exception {
+	public void onLoginClick(View view) throws JSONException {
 		String url = "oauth/token";
+		
 		RequestParams params = new RequestParams();
 		params.put("client_id", "VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh");
 		params.put("grant_type", "password");
 		params.put("username", username.getText().toString());
 		params.put("password", password.getText().toString());
 		
-		httpClient.post(url, params, new AsyncHttpResponseHandler() {
+		httpClient.post(url, params, new JsonHttpResponseHandler() {
 			 @Override
-	            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+	            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 				 	Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
 					startActivity(myIntent);
+
+					String authString = null;
+					try {
+						authString = response.getString("access_token");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					storeSharedPreferences(authString);
 	            }
 	            
-	            @Override
-	            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable e) {
-	            	badLoginAlert();
-	            	System.out.println(e.getMessage());
-	            }
 	        });	
+	}
+	
+	public void storeSharedPreferences(String authString) {	
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("token",authString);
+		editor.commit();		
 	}
 	
 	public void badLoginAlert () {
