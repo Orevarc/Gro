@@ -25,11 +25,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.json.*;
 
+import com.google.gson.Gson;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -54,6 +56,8 @@ public class PhotoCaptureExample extends Activity {
 
 	HTTPRestClient httpClient = new HTTPRestClient();
 	
+	protected ReceiptParser receiptParser = new ReceiptParser();
+	
 	protected ImageButton _button;
 	//protected ImageView _image;
 	protected String _path;
@@ -61,6 +65,7 @@ public class PhotoCaptureExample extends Activity {
 	protected Bitmap bitmap;
 	protected ExifInterface exif = null;
 	protected ArrayList<FoodItem> ownedFoodList;
+	protected ArrayList<BasicFoodItem> addedFoodList; //converts food list items into basic items to send with HTTP Post
 	protected ListView foodListView;
 	
 	protected static final String PHOTO_TAKEN	= "photo_taken";
@@ -97,8 +102,6 @@ public class PhotoCaptureExample extends Activity {
         FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
         
         foodListView.setAdapter(arrayAdapter);
-        
-        System.out.println("Hello");
     }
     
     public class ButtonClickHandler implements View.OnClickListener 
@@ -208,6 +211,7 @@ public class PhotoCaptureExample extends Activity {
     
     public void performOCR()
     {
+    	String filepath = "/storage/sdcard0/InitialOCR/OCRTextCaptured.txt";
     	System.out.println("Performing OCR");
     	TessBaseAPI baseApi = new TessBaseAPI();
     	// DATA_PATH = Path to the storage
@@ -218,7 +222,7 @@ public class PhotoCaptureExample extends Activity {
     	baseApi.end();
     	System.out.println(recognizedText);
     	try {
-    		File file = new File("/storage/sdcard0/InitialOCR/OCRTextCaptured.txt");
+    		File file = new File(filepath);
 			PrintWriter out = new PrintWriter(file);
 			out.println(recognizedText);
 			out.close();
@@ -226,16 +230,50 @@ public class PhotoCaptureExample extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    public void afterOCR(String filepath) throws Exception 
+    {
+    	addedFoodList = receiptParser.parseTextToArray(filepath);
+    	postFoodItems();
+    	getFoodItems();
+    	addedFoodList = new ArrayList<BasicFoodItem>();
+    	initFoodList();
+    }
+    
+    public void postFoodItems() throws Exception 
+    {
+    	String url = "additems";
+    	Gson gson = new Gson();
     	
+    	String authString = getAuthToken();
     	
+    	Header[] headers = {
+    			new BasicHeader("Authorization", "Bearer " + authString)
+    	};
+    	
+    	RequestParams params = new RequestParams();
+    	params.add("items", gson.toJson(addedFoodList));
+    	
+    	httpClient.postAuth(url, headers, params, new JsonHttpResponseHandler() {
+			 @Override
+	            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					try {
+						JSONArray itemArray = response.getJSONArray("items");
+						
+						populateOwnedFoodItems(itemArray);
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+	        });	
     }
     
 	public void getFoodItems() throws Exception {
-		String url = "useritems";
-		
-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-		String authString = settings.getString ("token", "");
-		System.out.println(authString);
+		String url = "useritems";	
+		String authString = getAuthToken();
 		
 		Header[] headers = {
 				new BasicHeader("Authorization","Bearer " + authString)
@@ -271,17 +309,16 @@ public class PhotoCaptureExample extends Activity {
 		}
 	}
 	
-	public void requestAlert (String info) {
-		new AlertDialog.Builder(this)
-	    .setTitle("Mike...is gay")
-	    .setMessage(info)
-	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	            // continue with delete
-	        }
-	     })
-	    .setIcon(android.R.drawable.ic_dialog_alert)
-	     .show();
+	public String getAuthToken() {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		String authString = settings.getString ("token", "");
+		return authString;
+	}
+	
+	public void initFoodList() {
+        FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
+        
+        foodListView.setAdapter(arrayAdapter);
 	}
     
 	public void goToRecipe(View view) {
@@ -298,6 +335,19 @@ public class PhotoCaptureExample extends Activity {
 	public void onBackPressed() {
 	   Intent setIntent = new Intent(PhotoCaptureExample.this, Login.class);
 	   startActivity(setIntent);
+	}
+	
+	public void requestAlert (String info) {
+		new AlertDialog.Builder(this)
+	    .setTitle("Mike...is gay")
+	    .setMessage(info)
+	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // continue with delete
+	        }
+	     })
+	    .setIcon(android.R.drawable.ic_dialog_alert)
+	     .show();
 	}
 	
 }
