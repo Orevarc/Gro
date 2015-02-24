@@ -8,5 +8,6 @@
     <string name="title_activity_shopping_list">ShoppingList</string>
     <string name="title_activity_recipe">Recipe</string>
     <string name="title_activity_test">Test</string>
+    <string name="title_activity_register">RegisterActivity</string>
 
 </resources>

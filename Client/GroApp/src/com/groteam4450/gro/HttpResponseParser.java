@@ -13,4 +13,10 @@ public class HttpResponseParser {
 		}
 		return false;
 	}
+	
+	public boolean parseRegistrationResponse(String response) {
+		//if (response.contains())
+			
+		return false;
+	}
 }

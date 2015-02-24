@@ -1,5 +1,16 @@
 package com.groteam4450.gro;
 
+import java.net.URL;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +22,8 @@ import android.view.View;
 import android.widget.EditText;
 
 public class Login extends ActionBarActivity {
+	
+	AsyncHttpClient client = new AsyncHttpClient();
 
 	HttpClient httpClient = new HttpClient();
 	HttpResponseParser httpParser = new HttpResponseParser();
@@ -22,7 +35,8 @@ public class Login extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+		username = (EditText) findViewById(R.id.username);
+		password = (EditText) findViewById(R.id.password);
 	}
 
 	@Override
@@ -47,29 +61,39 @@ public class Login extends ActionBarActivity {
 	//Method used to verify login. The onclick sends a post request to the server using HttpClient.java 
 	//and then parses the response for a successful login
 	public void onLoginClick() throws Exception {
-		username = (EditText) findViewById(R.id.username);
-		password = (EditText) findViewById(R.id.password);
+		String url = "oauth/token";
 		
-		loginResponse = httpClient.loginSendPost("VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh", username.getText().toString(), password.getText().toString());
+		RequestParams params = new RequestParams();
+		params.put("client_id", "VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh");
+		params.put("grant_type", "password");
+		params.put("username", username.getText().toString());
+		params.put("password", password.getText().toString());
 		
-		if (httpParser.parseLoginResponse(loginResponse)) 
-		{
-			Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
-			startActivity(myIntent);
-		}
-		else
-		{
-			new AlertDialog.Builder(this)
-		    .setTitle("Login Unsuccessful")
-		    .setMessage("Please check your information and try again")
-		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int which) { 
-		            // continue with delete
-		        }
-		     })
-		    .setIcon(android.R.drawable.ic_dialog_alert)
-		     .show();
-		}
+		client.post(url, params, new AsyncHttpResponseHandler() {
+			 @Override
+	            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+				 	Intent myIntent = new Intent(Login.this, PhotoCaptureExample.class);
+					startActivity(myIntent);
+	            }
+	            
+	            @Override
+	            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable e) {
+	            	badLoginAlert();
+	            }
+	        });	
+	}
+	
+	public void badLoginAlert () {
+		new AlertDialog.Builder(this)
+	    .setTitle("Login Unsuccessful")
+	    .setMessage("Please check your information and try again")
+	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	            // continue with delete
+	        }
+	     })
+	    .setIcon(android.R.drawable.ic_dialog_alert)
+	     .show();
 	}
 	
 	@Override

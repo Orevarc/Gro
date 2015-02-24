@@ -8,16 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpClient {
- 
+
 	public HttpClient(){}
-	
-	public static void main(String[] args) throws Exception {
-		 
-		HttpClient httpClient = new HttpClient();
-		
-		
-		System.out.println(httpClient.loginSendPost("VCuiPfDx0OjgJFMQZF5m3se78Mu0TZMh", "ConceptTest2", "1loveLuiz"));
-	}
 	
 //	// HTTP GET request
 //	private void sendGet() throws Exception {
