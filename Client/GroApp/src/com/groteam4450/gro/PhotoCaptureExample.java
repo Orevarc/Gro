@@ -28,10 +28,12 @@ import java.util.Date;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.json.*;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import android.os.Environment;
@@ -75,36 +77,28 @@ public class PhotoCaptureExample extends Activity {
         _path = "/storage/sdcard0/images/make_machine_example.jpg";
         
         foodListView = (ListView) findViewById(R.id.listView1);
-        
+ 
         ownedFoodList = new ArrayList<FoodItem>();
         
-        FoodItem foodA = new FoodItem("Egg", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        FoodItem foodB = new FoodItem("Riceroni", "12345678910", "Grains", "10/02/2014", false);
-        FoodItem foodC = new FoodItem("Haggis", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        FoodItem foodD = new FoodItem("Corn", "12345678910", "Meat, Poultry, Seafood", "11/02/2017", false);
-        FoodItem foodE = new FoodItem("Peas", "12345678910", "Meat, Poultry, Seafood", "11/02/2016", false);
-        FoodItem foodF = new FoodItem("Corrosive acid", "12345678910", "Meat, Poultry, Seafood", "13/02/2015", false);
-        FoodItem foodG = new FoodItem("Waffles", "12345678910", "Meat, Poultry, Seafood", "10/02/2015", false);
-        FoodItem foodH = new FoodItem("Burgers", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        FoodItem foodI = new FoodItem("Fuzzy Peaches", "12345678910", "Meat, Poultry, Seafood", "31/04/2015", false);
-        FoodItem foodJ = new FoodItem("Human meat", "12345678910", "Meat, Poultry, Seafood", "11/02/2098", false);
-        FoodItem foodK = new FoodItem("Yams", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        FoodItem foodL = new FoodItem("Salt", "12345678910", "Meat, Poultry, Seafood", "11/02/2015", false);
-        ownedFoodList.add(foodA);
-        ownedFoodList.add(foodB);
-        ownedFoodList.add(foodC);
-        ownedFoodList.add(foodD);
-        ownedFoodList.add(foodE);
-        ownedFoodList.add(foodF);
-        ownedFoodList.add(foodG);
-        ownedFoodList.add(foodH);
-        ownedFoodList.add(foodI);
-        ownedFoodList.add(foodJ);
-        ownedFoodList.add(foodK);
-        ownedFoodList.add(foodL);
+        try {
+			getFoodItems();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
         FoodItemAdapter arrayAdapter = new FoodItemAdapter(this, ownedFoodList);
         
         foodListView.setAdapter(arrayAdapter);
+        
+        System.out.println("Hello");
     }
     
     public class ButtonClickHandler implements View.OnClickListener 
@@ -236,8 +230,8 @@ public class PhotoCaptureExample extends Activity {
     	
     }
     
-	public void onRequestClick(View view) throws Exception {
-		String url = "users/current";
+	public void getFoodItems() throws Exception {
+		String url = "useritems";
 		
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		String authString = settings.getString ("token", "");
@@ -247,17 +241,34 @@ public class PhotoCaptureExample extends Activity {
 				new BasicHeader("Authorization","Bearer " + authString)
 		};
 		
-		httpClient.getAuth(url, headers, null, new AsyncHttpResponseHandler() {
+		httpClient.getAuth(url, headers, null, new JsonHttpResponseHandler() {
 			 @Override
-	            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-				 	requestAlert(response.toString());
-	            }
-	            
-	            @Override
-	            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable e) {
-	            	
+	            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					try {
+						JSONArray itemArray = response.getJSONArray("items");
+						
+						populateOwnedFoodItems(itemArray);
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            }
 	        });	
+	}
+	
+	public void populateOwnedFoodItems (JSONArray itemArray) throws JSONException {
+
+		for (int i = 0; i<itemArray.length(); i++) {
+			JSONObject object = itemArray.getJSONObject(i);
+			
+			FoodItem item = new FoodItem(object.get("ownershipID").toString(), object.get("expiryDate").toString(), 
+					object.get("upcCode").toString(), object.get("itemName").toString(), object.get("factualCategory").toString(),
+					object.get("generalCategory").toString());
+			System.out.println(item.itemName);
+			
+			ownedFoodList.add(item);
+		}
 	}
 	
 	public void requestAlert (String info) {
