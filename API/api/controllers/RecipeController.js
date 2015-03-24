@@ -6,5 +6,7 @@
  */
 
 module.exports = {
-
+    getAllRecipes: function(req, res) {
+        API(RecipePage.getAllRecipes, req, res);
+    }
 };

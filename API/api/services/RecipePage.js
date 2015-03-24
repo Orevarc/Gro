@@ -110,7 +110,7 @@ module.exports = {
             return fooditems;
         });
     },
-
+    //NOT DONE COMPLETE
     postItem: function(data, context) {
         console.log(JSON.parse(data.items));
         console.log('USER');
