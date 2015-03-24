@@ -48,6 +48,7 @@ emailGeneratedCode = function(options) {
 module.exports = {
     emailGeneratedCode: emailGeneratedCode,
     currentUser: function(data, context) {
+        console.log(context.identity);
         return context.identity;
     },
     registerUser: function(data, context) {

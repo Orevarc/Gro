@@ -3,7 +3,7 @@ module.exports.security = {
         version: '2.0',
         token: {
             length: 32,
-            expiration: 10000
+            expiration: 100000
         }
     },
     admin: {
@@ -14,6 +14,6 @@ module.exports.security = {
 
     },
     server: {
-        url: 'http://localhost:1336'
+        url: 'http://groappvm.cloudapp.net:1336'
     }
 };
