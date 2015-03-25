@@ -75,7 +75,54 @@ lookupUPC = function(options) {
 
 };
 
+addOwnedItem = function(options) {
+    var fooditem = options.fooditem,
+        user_id = options.user_id;
+    var date = new Date();
+    var expiry = new Date();
+    if (fooditem.expiryTime != null) {
+        expiry.setDate(expiry.getDate() + fooditem.expiryTime);
+    } else {
+
+        expiry = null;
+    }
+    return OwnedFoodItem.create({
+        user_id: user_id,
+        foodItemID: fooditem.foodItemID,
+        dateBought: date,
+        expiryDate: expiry,
+        used: 0
+    }).then(function(ownedfooditem) {
+        ownedfooditem.ownershipID = ownedfooditem.id;
+        return ownedfooditem;
+    });
+
+};
+
+manualAddFoodItem = function(options) {
+
+};
+
 module.exports = {
+
+    getFoodCategories: function(data, context) {
+        queryCategory = "SELECT foodCategoryID, factualCategory FROM FoodCategory ORDER BY factualCategory ASC";
+        var queryAsync = Promise.promisify(FoodCategory.query);
+        return queryAsync(queryCategory).then(function(foodcategories) {
+            console.log('Food Categories: ' + foodcategories);
+            return {
+                success: true,
+                foodcategories: foodcategories
+            };
+        }).catch(function(e) {
+            return {
+                success: false,
+                message: "Could not retrieve Food Categories",
+                error: e
+            };
+        });
+
+    },
 
     getUserItems: function(data, context) {
         var user_id = context.identity.id;
@@ -112,17 +159,34 @@ module.exports = {
     },
 
     postItem: function(data, context) {
-        console.log(JSON.parse(data.items));
-        console.log('USER');
-        console.log(context.identity.id);
-        var items = JSON.parse(data.items);
-        return lookupUPC({
-            items: items,
-            user_id: context.identity.id
-        }).then(function(fooditems) {
-            console.log('KKK ' + fooditems);
-            return fooditems;
+        return API.Model(FoodItem).findOne({
+            upcCode: data.upc
+        }).then(function(fooditem) {
+
+            if (!fooditem) {
+                return {
+                    success: false,
+                    upc: data.upc
+                };
+            }
+            return addOwnedItem({
+                user_id: context.identity.id,
+                fooditem: fooditem
+            }).then(function(ownedfooditem) {
+
+                return ownedfooditem;
+            });
+
         });
+    },
+    manualAddItem: function(data, context) {
+        // var user_id = context.identity.id;
+        // return manualAddFoodItem({
+
+        // }).then(function(ownedfooditem) {
+        //     return ownedfooditem;
+        // });
+
     },
     markUsed: function(data, context) {
         var items = JSON.parse(data.items);

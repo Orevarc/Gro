@@ -15,6 +15,12 @@ module.exports = {
     postItem: function(req, res) {
         API(FoodPage.postItem, req, res);
     },
+    manualAddItem: function(req, res) {
+        API(FoodPage.manualAddItem, req, res);
+    },
+    getFoodCategories: function(req, res) {
+        API(FoodPage.getFoodCategories, req, res);
+    },
     markUsed: function(req, res) {
         API(FoodPage.markUsed, req, res);
     },
