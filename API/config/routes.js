@@ -38,10 +38,14 @@ module.exports.routes = {
 
     'GET /useritems': 'FoodPageController.getAllItems',
     'GET /getallrecipes': 'RecipeController.getAllRecipes',
+    'GET /shoppingitems': 'ShoppingListController.getShoppingItems',
+    'POST /addshoppingitem': 'ShoppingListController.addShoppingItem',
+    'POST /addshoppingitems': 'ShoppingListController.addShoppingItems',
     'POST /additems': 'FoodPageController.postListItems',
     'POST /additem': 'FoodPageController.postItem',
     'POST /markused': 'FoodPageController.markUsed',
     'POST /markwasted': 'FoodPageController.markWasted',
+    'DELETE /shoppingitem': 'ShoppingListController.deleteShoppingItem',
 
 
 
