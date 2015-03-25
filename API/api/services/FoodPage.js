@@ -76,12 +76,15 @@ lookupUPC = function(options) {
 };
 
 addOwnedItem = function(options) {
-    var fooditem = options.fooditem,
+    var fooditem = options.fooditem[0],
         user_id = options.user_id;
     var date = new Date();
     var expiry = new Date();
+    var expiryT;
+    //console.log('FoodI ' + JSON.stringify(fooditem));
     if (fooditem.expiryTime != null) {
         expiry.setDate(expiry.getDate() + fooditem.expiryTime);
+        expiryT = expiry.getTime();
     } else {
 
         expiry = null;
@@ -94,7 +97,15 @@ addOwnedItem = function(options) {
         used: 0
     }).then(function(ownedfooditem) {
         ownedfooditem.ownershipID = ownedfooditem.id;
-        return ownedfooditem;
+        return {
+            success: true,
+            ownershipID: ownedfooditem.ownershipID,
+            itemName: fooditem.itemName,
+            upcCode: fooditem.upcCode,
+            expiryDate: expiryT,
+            factualCategory: fooditem.factualCategory,
+            generalCategory: fooditem.generalCategory
+        };
     });
 
 };
@@ -159,11 +170,11 @@ module.exports = {
     },
 
     postItem: function(data, context) {
-        return API.Model(FoodItem).findOne({
-            upcCode: data.upc
-        }).then(function(fooditem) {
 
-            if (!fooditem) {
+        var queryItem = "SELECT FoodItem.foodItemID, FoodItem.upcCode, FoodItem.itemName, FoodCategory.factualCategory, FoodCategory.generalCategory, FoodCategory.expiryTime FROM FoodItem INNER JOIN FoodCategory ON FoodItem.foodCategoryID = FoodCategory.foodCategoryID WHERE CAST(upcCode as numeric(13,0)) = " + data.upc;
+        var queryAsync = Promise.promisify(FoodItem.query);
+        return queryAsync(queryItem).then(function(fooditem) {
+            if (fooditem == "") {
                 return {
                     success: false,
                     upc: data.upc
@@ -173,11 +184,21 @@ module.exports = {
                 user_id: context.identity.id,
                 fooditem: fooditem
             }).then(function(ownedfooditem) {
-
                 return ownedfooditem;
             });
-
         });
+        // return API.Model(FoodItem).findOne({
+        //     upcCode: data.upc
+        // }).then(function(fooditem) {
+
+        //     if (!fooditem) {
+        //         return {
+        //             success: false,
+        //             upc: data.upc
+        //         };
+        //     }
+
+        // });
     },
     manualAddItem: function(data, context) {
         // var user_id = context.identity.id;
