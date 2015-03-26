@@ -9,5 +9,9 @@ module.exports = {
 
     attributes: {
 
+    },
+
+    grabRecipes: function(req, res) {
+
     }
 };
