@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-
+    migrate: 'safe',
     attributes: {
         user_id: {
             model: 'users'
@@ -21,7 +21,7 @@ module.exports = {
         },
 
         expiryDate: {
-            type: 'date'
+            type: 'int'
         },
 
         used: {

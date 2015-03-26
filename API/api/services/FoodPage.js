@@ -20,18 +20,20 @@ lookupUPC = function(options) {
             queryAsync(query2).then(function(fooditem) {
                 var date = new Date();
                 var expiry = new Date();
+                var expiryT;
                 var foodID = fooditem[0].foodItemID;
                 if (fooditem[0].expiryTime != null) {
                     expiry.setDate(expiry.getDate() + fooditem[0].expiryTime);
+                    expiryT = expiry.getTime();
                 } else {
                     console.log('NULL EXPIRY');
-                    expiry = null;
+                    expiryT = null;
                 }
                 OwnedFoodItem.create({
                     user_id: user_id,
                     foodItemID: fooditem[0].foodItemID,
                     dateBought: date,
-                    expiryDate: expiry,
+                    expiryDate: expiryT,
                     used: 0
                 }).then(function(ownedfooditem) {
                     // console.log('----FoodItem2');
@@ -84,16 +86,18 @@ addOwnedItem = function(options) {
     //console.log('FoodI ' + JSON.stringify(fooditem));
     if (fooditem.expiryTime != null) {
         expiry.setDate(expiry.getDate() + fooditem.expiryTime);
+        console.log("Ecpiry " + expiry.getTime());
         expiryT = expiry.getTime();
+        console.log("Time " + expiryT);
     } else {
 
-        expiry = null;
+        expiryT = null;
     }
     return OwnedFoodItem.create({
         user_id: user_id,
         foodItemID: fooditem.foodItemID,
         dateBought: date,
-        expiryDate: expiry,
+        expiryDate: expiryT,
         used: 0
     }).then(function(ownedfooditem) {
         ownedfooditem.ownershipID = ownedfooditem.id;
@@ -110,7 +114,49 @@ addOwnedItem = function(options) {
 
 };
 
-manualAddFoodItem = function(options) {
+addFoodItem = function(options) {
+    console.log('In Add');
+    var queryCategory = "SELECT foodCategoryID, expiryTime FROM FoodCategory WHERE factualCategory = '" + options.factualCategory + "'";
+    var queryAsync = Promise.promisify(FoodCategory.query);
+    return queryAsync(queryCategory).then(function(category) {
+        cat = category[0];
+        return FoodItem.create({
+            upcCode: options.upcCode,
+            itemName: options.itemName,
+            foodCategoryID: cat.foodCategoryID,
+            generalTag: options.generalTag
+        }).then(function(fooditem) {
+            console.log(JSON.stringify(fooditem));
+            var date = new Date();
+            var expiry = new Date();
+            var expiryT;
+            if (cat.expiryTime != null) {
+                expiry.setDate(expiry.getDate() + cat.expiryTime);
+                expiryT = expiry.getTime();
+            } else {
+                expiryT = null;
+            }
+            return OwnedFoodItem.create({
+                user_id: options.user_id,
+                foodItemID: fooditem.id,
+                dateBought: date,
+                expiryDate: expiryT,
+                used: 0
+            }).then(function(ownedfooditem) {
+                ownedfooditem.ownershipID = ownedfooditem.id;
+                return {
+                    success: true,
+                    ownershipID: ownedfooditem.ownershipID,
+                    itemName: fooditem.itemName,
+                    upcCode: fooditem.upcCode,
+                    expiryDate: expiryT,
+                    factualCategory: fooditem.factualCategory,
+                    generalCategory: fooditem.generalCategory
+                };
+            });
+        });
+
+    });
 
 };
 
@@ -170,7 +216,7 @@ module.exports = {
     },
 
     postItem: function(data, context) {
-
+        console.log("YOU GOT HERE!");
         var queryItem = "SELECT FoodItem.foodItemID, FoodItem.upcCode, FoodItem.itemName, FoodCategory.factualCategory, FoodCategory.generalCategory, FoodCategory.expiryTime FROM FoodItem INNER JOIN FoodCategory ON FoodItem.foodCategoryID = FoodCategory.foodCategoryID WHERE CAST(upcCode as numeric(13,0)) = " + data.upc;
         var queryAsync = Promise.promisify(FoodItem.query);
         return queryAsync(queryItem).then(function(fooditem) {
@@ -201,12 +247,15 @@ module.exports = {
         // });
     },
     manualAddItem: function(data, context) {
-        // var user_id = context.identity.id;
-        // return manualAddFoodItem({
+        var user_id = context.identity.id;
 
-        // }).then(function(ownedfooditem) {
-        //     return ownedfooditem;
-        // });
+        return addFoodItem({
+            user_id: user_id,
+            upcCode: data.upcCode,
+            itemName: data.itemName,
+            factualCategory: data.factualCategory,
+            generalTag: data.generalTag
+        });
 
     },
     markUsed: function(data, context) {
