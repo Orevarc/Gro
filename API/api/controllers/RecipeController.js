@@ -9,7 +9,7 @@ module.exports = {
     getAllRecipes: function(req, res) {
         API(RecipePage.getAllRecipes, req, res);
     },
-    recipeByIngredient: function(req, res) {
-        API(RecipePage.recipeByIngredient, req, res);
+    recipeByIngredients: function(req, res) {
+        API(RecipePage.recipeByIngredients, req, res);
     }
 };

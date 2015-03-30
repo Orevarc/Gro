@@ -22,7 +22,6 @@ sendResult = function(request, response) {
 };
 
 sendError = function(request, response) {
-    console.log('Error Encountered');
     return function(err) {
         var str,
             errTypes = ['unauthorized4', 'forbidden', 'invalid', 'internal'],

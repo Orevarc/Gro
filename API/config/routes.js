@@ -47,6 +47,7 @@ module.exports.routes = {
     'POST /manualadditem': 'FoodPageController.manualAddItem',
     'POST /markused': 'FoodPageController.markUsed',
     'POST /markwasted': 'FoodPageController.markWasted',
+    'POST /recipesbyingredients': 'RecipeController.recipeByIngredients',
     'DELETE /deleteitem': 'FoodPageController.deleteItem',
     'DELETE /shoppingitem': 'ShoppingListController.deleteShoppingItem',
 

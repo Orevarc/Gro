@@ -22,6 +22,9 @@ module.exports = {
         foodCategoryID: {
             type: 'string',
         },
+        generalTag: {
+            type: 'string',
+        },
         toJSON: function() {
 
             var obj = this.toObject();
