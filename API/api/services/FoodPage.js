@@ -12,12 +12,17 @@ lookupUPC = function(options) {
     return new Promise(function(resolve, reject) {
         for (var i = 0; i < items.length; i++) {
             requests++;
-            var upc = '' + items[i]["upc"];
-            console.log("UPC " + upc);
+            var upc = '' + items[i]["upcCode"];
+            //console.log("UPC " + upc);
 
             var query2 = "SELECT FoodItem.foodItemID, FoodItem.upcCode, FoodItem.itemName, FoodCategory.factualCategory, FoodCategory.generalCategory, FoodCategory.expiryTime FROM FoodItem INNER JOIN FoodCategory ON FoodItem.foodCategoryID = FoodCategory.foodCategoryID WHERE CAST(upcCode as numeric(13,0)) = " + upc;
             var queryAsync = Promise.promisify(FoodItem.query);
             queryAsync(query2).then(function(fooditem) {
+                if (fooditem == "") {
+                    //console.log('DNE');
+                    requests--;
+                    return;
+                }
                 var date = new Date();
                 var expiry = new Date();
                 var expiryT;
@@ -26,8 +31,7 @@ lookupUPC = function(options) {
                     expiry.setDate(expiry.getDate() + fooditem[0].expiryTime);
                     expiryT = expiry.getTime();
                 } else {
-                    console.log('NULL EXPIRY');
-                    expiryT = null;
+                    expiryT = 0;
                 }
                 OwnedFoodItem.create({
                     user_id: user_id,
@@ -36,18 +40,18 @@ lookupUPC = function(options) {
                     expiryDate: expiryT,
                     used: 0
                 }).then(function(ownedfooditem) {
-                    // console.log('----FoodItem2');
-                    // console.log(fooditem[0]);
-                    // console.log('----OWNEDFOODItem----------');
-                    // console.log(ownedfooditem);
-                    // console.log('Before' + requests);
                     requests--;
-                    console.log("L" + ownedfooditem.toString());
                     fooditem[0].ownershipID = ownedfooditem.ownershipID;
-                    masterList.push(fooditem[0]);
+                    var item = {
+                        ownershipID: 2,
+                        expiryDate: expiryT,
+                        itemName: fooditem[0].itemName,
+                        factualCategory: ownedfooditem.factualCategory,
+                        generalCategory: ownedfooditem.generalCategory,
+                        generalTag: fooditem[0].generalTag
+                    };
+                    masterList.push(item);
                     if (requests == 0) {
-                        console.log('MASTER' + masterList);
-                        //console.log("Owned" + ownedfooditem);
                         resolve({
                             success: true,
                             items: masterList
@@ -91,7 +95,7 @@ addOwnedItem = function(options) {
         console.log("Time " + expiryT);
     } else {
 
-        expiryT = null;
+        expiryT = 0;
     }
     return OwnedFoodItem.create({
         user_id: user_id,
@@ -115,7 +119,6 @@ addOwnedItem = function(options) {
 };
 
 addFoodItem = function(options) {
-    console.log('In Add');
     var queryCategory = "SELECT foodCategoryID, expiryTime FROM FoodCategory WHERE factualCategory = '" + options.factualCategory + "'";
     var queryAsync = Promise.promisify(FoodCategory.query);
     return queryAsync(queryCategory).then(function(category) {
@@ -134,7 +137,7 @@ addFoodItem = function(options) {
                 expiry.setDate(expiry.getDate() + cat.expiryTime);
                 expiryT = expiry.getTime();
             } else {
-                expiryT = null;
+                expiryT = 0;
             }
             return OwnedFoodItem.create({
                 user_id: options.user_id,
@@ -166,7 +169,7 @@ module.exports = {
         queryCategory = "SELECT foodCategoryID, factualCategory FROM FoodCategory ORDER BY factualCategory ASC";
         var queryAsync = Promise.promisify(FoodCategory.query);
         return queryAsync(queryCategory).then(function(foodcategories) {
-            console.log('Food Categories: ' + foodcategories);
+            //console.log('Food Categories: ' + foodcategories);
             return {
                 success: true,
                 foodcategories: foodcategories
@@ -204,7 +207,6 @@ module.exports = {
 
 
     postListItems: function(data, context) {
-        console.log("DATA " + JSON.stringify(data));
         var items = JSON.parse(data.items);
         return lookupUPC({
             items: items,
@@ -233,22 +235,10 @@ module.exports = {
                 return ownedfooditem;
             });
         });
-        // return API.Model(FoodItem).findOne({
-        //     upcCode: data.upc
-        // }).then(function(fooditem) {
-
-        //     if (!fooditem) {
-        //         return {
-        //             success: false,
-        //             upc: data.upc
-        //         };
-        //     }
-
-        // });
     },
     manualAddItem: function(data, context) {
         var user_id = context.identity.id;
-
+        console.log('GUHS ' + JSON.stringify(data));
         return addFoodItem({
             user_id: user_id,
             upcCode: data.upcCode,
@@ -259,15 +249,7 @@ module.exports = {
 
     },
     markUsed: function(data, context) {
-        var items = JSON.parse(data.items);
-        if (items.mark != 1) {
-            return {
-                success: false,
-                message: "Wrong number sent for used",
-                error: null
-            };
-        }
-        var queryUsed = "UPDATE OwnedFoodItem SET used = " + items.mark + "WHERE ownershipID = " + items.ownershipID;
+        var queryUsed = "UPDATE OwnedFoodItem SET used = 1 WHERE ownershipID = " + data.ownershipID;
         var queryAsync = Promise.promisify(OwnedFoodItem.query);
         return queryAsync(queryUsed).then(function(used) {
             return {
@@ -282,15 +264,7 @@ module.exports = {
         });
     },
     markWasted: function(data, context) {
-        var items = JSON.parse(data.items);
-        if (items.mark != 2) {
-            return {
-                success: false,
-                message: "Wrong number sent for wasted",
-                error: null
-            };
-        }
-        var queryWasted = "UPDATE OwnedFoodItem SET used = " + items.mark + "WHERE ownershipID = " + items.ownershipID;
+        var queryWasted = "UPDATE OwnedFoodItem SET used = 2 WHERE ownershipID = " + data.ownershipID;
         var queryAsync = Promise.promisify(OwnedFoodItem.query);
         return queryAsync(queryWasted).then(function(wasted) {
             return {
@@ -306,7 +280,7 @@ module.exports = {
     },
     deleteItem: function(data, context) {
         var items = JSON.parse(data.items);
-        var queryDelete = "DELETE FROM OwnedFoodItem WHERE ownershipID = " + items.ownershipID;
+        var queryDelete = "DELETE FROM OwnedFoodItem WHERE ownershipID = " + data.ownershipID;
         var queryAsync = Promise.promisify(OwnedFoodItem.query);
         return queryAsync(queryDelete).then(function(deleted) {
             return {

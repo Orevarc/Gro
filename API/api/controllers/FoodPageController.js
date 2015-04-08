@@ -26,5 +26,8 @@ module.exports = {
     },
     markWasted: function(req, res) {
         API(FoodPage.markWasted, req, res);
+    },
+    deleteItem: function(req, res) {
+        API(FoodPage.deleteItem, req, res);
     }
 };

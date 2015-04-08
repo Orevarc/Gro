@@ -3,15 +3,24 @@ var Promise = require('bluebird'),
 
 addAllItems = function(options) {
     var items = options.items,
-        user_id = options.user_id;
+        user_id = options.user_id,
+        requests = items.length - 1;
+
     return new Promise(function(resolve, reject) {
         for (var i = 0; i < items.length; i++) {
             requests++;
-            var item = '' + items[i]["upc"];
-            console.log("UPC " + upc);
+            var item = '' + items[i]["itemName"];
+            console.log("UPC " + item);
             ShoppingList.create({
                 user_id: user_id,
                 itemName: item
+            }).then(function(listitem) {
+                requests--;
+                if (requests == 0) {
+                    resolve({
+                        success: true
+                    });
+                }
             });
         }
     });
@@ -23,6 +32,7 @@ module.exports = {
     addShoppingItem: function(data, context) {
         //console.log("DATA " + JSON.stringify(data));
         //var item = JSON.parse(data.item);
+
         return API.Model(ShoppingList).create({
             user_id: context.identity.id,
             itemName: data.item
@@ -43,9 +53,10 @@ module.exports = {
     },
 
     addShoppingItems: function(data, context) {
-        JSON.stringify(data);
+        //JSON.stringify(data);
+        //console.log('Hit Shopping List' + JSON.stringify(data));
         var items = JSON.parse(data.items);
-        return getAllItems({
+        return addAllItems({
             items: items,
             user_id: context.identity.id
         }).then(function(fooditems) {
