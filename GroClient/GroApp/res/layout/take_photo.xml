@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal|center_vertical|top"
+    android:orientation="vertical" 
+    android:screenOrientation="portrait">
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="450dp" >          
+        </ListView>
+        
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/listView1"
+        android:layout_marginRight="11dp"
+        android:background="@drawable/camera44" />
+    
+        <ImageButton
+        android:id="@+id/manualEntryButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_toLeftOf="@id/button"
+        android:layout_alignTop="@+id/viewByCategoryButton"
+        android:layout_below="@id/listView1"
+        android:layout_marginRight="11dp"
+        android:background="@drawable/plus8" />
+
+    
+    <ImageButton
+        android:id="@+id/addToShoppingListButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignLeft="@id/listView1"
+        android:layout_below="@id/listView1"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/shoppinglist" />
+    
+    <ImageButton
+        android:id="@+id/findRecipeButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+		android:layout_toRightOf="@id/addToShoppingListButton"
+        android:layout_below="@id/listView1"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/cutlery" />  
+
+    <ImageButton
+        android:id="@+id/fridgeButton"
+        android:layout_width="85dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/refrigeratorgreen"
+        android:clickable="false" />
+
+    <ImageButton
+        android:id="@+id/chefButton"
+        android:layout_width="95dp"
+        android:layout_height="85dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/fridgeButton"
+        android:background="@drawable/chef31"
+        android:onClick="goToRecipe" />
+
+    <ImageButton
+        android:id="@+id/shoppingButton"
+        android:layout_width="85dp"
+        android:layout_height="78dp"
+        android:layout_below="@id/button"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/chefButton"
+        android:background="@drawable/grocery10"
+        android:onClick="goToShopping" />
+
+</RelativeLayout>

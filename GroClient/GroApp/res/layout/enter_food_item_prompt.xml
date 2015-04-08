@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+    <TextView
+        android:id="@+id/enterUPCTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter UPC Code:  "
+        android:textAppearance="?android:attr/textAppearanceLarge" />  
+ 
+    <EditText
+        android:id="@+id/upcEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+ 
+    </EditText>
+    
+   	<TextView
+        android:id="@+id/enterNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Item Name:  "
+        android:textAppearance="?android:attr/textAppearanceLarge" />  
+ 
+    <EditText
+        android:id="@+id/itemNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <requestFocus />
+    </EditText>
+    
+    <TextView
+        android:id="@+id/chooseCategoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose a category: "
+        android:textAppearance="?android:attr/textAppearanceLarge" />  
+    
+  	<Spinner
+	    android:id="@+id/categorySpinner"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" />
+ 
+    <TextView
+        android:id="@+id/enterTagTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter a tag:  "
+        android:textAppearance="?android:attr/textAppearanceLarge" /> 
+        
+    <EditText
+        android:id="@+id/itemTagEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </EditText>
+  	    
+    
+ 
+</LinearLayout>
