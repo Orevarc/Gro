@@ -40,6 +40,7 @@ module.exports.routes = {
     'GET /getallrecipes': 'RecipeController.getAllRecipes',
     'GET /shoppingitems': 'ShoppingListController.getShoppingItems',
     'GET /foodcategories': 'FoodPageController.getFoodCategories',
+    'GET /recipesbyexpiry': 'RecipeController.recipeByExpiry',
     'POST /addshoppingitem': 'ShoppingListController.addShoppingItem',
     'POST /addshoppingitems': 'ShoppingListController.addShoppingItems',
     'POST /additems': 'FoodPageController.postListItems',

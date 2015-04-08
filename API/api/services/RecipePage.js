@@ -93,4 +93,21 @@ module.exports = {
             };
         });
     },
+    recipeByExpiry: function(data, context) {
+        console.log('Hit Expiry Recipes');
+        //Get users list of owned food items sorted by expiry
+        //Sort by expiry time and limit it to top 5
+        //Randomize selection of 3 items from top 5
+        //Lookup recipes with lookupRecipes
+        return lookupRecipes({
+            ingredients: ingredients,
+            user_id: context.identity.id
+        }).then(function(recipes) {
+            //console.log('KKK ' + JSON.stringify(recipes));
+
+            return {
+                matches: recipes.matches
+            };
+        });
+    },
 };
