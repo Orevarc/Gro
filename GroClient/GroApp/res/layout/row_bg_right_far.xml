@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="#75A319">
+    
+    <TextView
+        android:id="@+id/itemUsedMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|right"
+        android:paddingLeft="15dp"
+        android:paddingRight="5dp"
+        android:text="Used"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+    
+
+</LinearLayout>

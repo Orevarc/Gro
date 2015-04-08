@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal|center_vertical|top"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/totalTime"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignLeft="@+id/ingredients"
+
+        android:text=" Time:  3600 seconds"
+        android:textSize="15sp" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/totalTime"
+        android:layout_below="@+id/totalTime"
+        android:ems="10"
+        android:text="Ingredients" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_alignLeft="@+id/instructions"
+        android:layout_below="@id/editText1"
+        android:text=" Ground beef    .5 lb \n Kidney beans    1 cp \n Garlic powder    3 tbsp \n Onion powder    2 tbsp \n Jack cheese    1/2 cp \n Salt    4 tbsp \n Pepper    2 tbsp \n Pasta noodles    4 cp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/fridgeButton"
+        android:layout_below="@id/ingredients"
+        android:clickable="true"
+        android:text="http://www.yummly.com/recipe/Southwest-Casserole-1029095"
+        android:textColor="@color/blue" >
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/fridgeButton"
+        android:layout_width="85dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/instructions"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/refrigerator"
+        android:onClick="goToMain" />
+
+    <ImageButton
+        android:id="@+id/chefButton"
+        android:layout_width="95dp"
+        android:layout_height="85dp"
+        android:layout_below="@id/instructions"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/fridgeButton"
+        android:background="@drawable/chef31green"
+        android:clickable="false" />
+
+    <ImageButton
+        android:id="@+id/shoppingButton"
+        android:layout_width="85dp"
+        android:layout_height="78dp"
+        android:layout_below="@id/instructions"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/chefButton"
+        android:background="@drawable/grocery10"
+        android:onClick="goToShopping" />
+
+    <TextView
+        android:id="@+id/recipeName"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignLeft="@+id/totalTime"
+        android:layout_alignTop="@+id/itemPic"
+        android:layout_toLeftOf="@+id/itemPic"
+        android:text="Southwest Cassarole"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/itemPic"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_alignLeft="@+id/shoppingButton"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/chickcass" />
+
+</RelativeLayout>

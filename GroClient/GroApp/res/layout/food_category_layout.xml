@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="45dp"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#7A9D33">
+ 
+ 
+    <TextView
+        android:id="@+id/categoryHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingRight="5dp"
+        android:textSize="20sp"
+        android:text="BLAHHHHH"
+        android:textColor="#FFFFFF" />
+ 
+</LinearLayout>
